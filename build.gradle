@@ -2,10 +2,12 @@ plugins {
     id "java-library"
     id "signing"
     id "maven-publish"
+    id 'jacoco'
     id "io.freefair.lombok" version "5.0.0-rc2"
     id "me.champeau.gradle.jmh" version "0.5.0"
     id "net.researchgate.release" version "2.8.1"
     id "com.jfrog.bintray" version "1.8.4"
+    id "com.github.spotbugs" version "3.0.0"
 }
 
 group = "io.rapidw.mqtt"
@@ -134,7 +136,7 @@ bintray {
     pkg {
         repo = "maven"
         name = project.name
-//        userOrg = "rapidw"
+        userOrg = "rapidw"
         licenses = ["Apache-2.0"]
         vcsUrl = project.vcsUrl
 
@@ -156,6 +158,11 @@ bintray {
     }
 
     publications = ["mavenJava"]
+}
+
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+    reports.xml.enabled = false
+    reports.html.enabled = true
 }
 
 afterReleaseBuild.dependsOn bintrayUpload
