@@ -1,0 +1,161 @@
+plugins {
+    id "java-library"
+    id "signing"
+    id "maven-publish"
+    id "io.freefair.lombok" version "5.0.0-rc2"
+    id "me.champeau.gradle.jmh" version "0.5.0"
+    id "net.researchgate.release" version "2.8.1"
+    id "com.jfrog.bintray" version "1.8.4"
+}
+
+group = "io.rapidw.mqtt"
+description = "Rapidw MQTT codec"
+
+String getProp(String name) {
+    if (hasProperty(name)) {
+        return properties[name]
+    } else {
+        String env = System.getenv("some_prop")
+        if (env != null) {
+            return env
+        } else {
+            return ""
+        }
+    }
+}
+
+ext {
+    url = "https://github.com/rapidw/mqtt-codec"
+    vcsUrl = "${url}.git"
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url "https://maven.aliyun.com/repository/public/"
+        allowInsecureProtocol true
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.slf4j:slf4j-api:1.7.30"
+    implementation "io.netty:netty-handler:4.1.45.Final"
+
+    testImplementation "ch.qos.logback:logback-classic:1.2.3"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.0"
+    testImplementation "org.assertj:assertj-core:3.11.1"
+
+    jmh "io.netty:netty-codec-mqtt:4.1.45.Final"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+javadoc {
+    source = sourceSets.main.delombokTask
+    options {
+        encoding = "UTF-8"
+        locale "en_US"
+        jFlags "-Duser.language=en_US"
+    }
+
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption("html5", true)
+    }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.delombokTask
+    archiveClassifier.set "sources"
+}
+
+task javadocJar(type: Jar) {
+    from javadoc.destinationDir
+    archiveClassifier.set "javadoc"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = "$group:$name"
+                description = project.description
+                url = project.url
+
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+
+                developers {
+                    developer {
+                        name = "pvtyuan"
+                        email = "pvtyuan@foxmail.com"
+                    }
+                }
+
+                scm {
+                    connection = "scm:git:${project.vcsUrl}"
+                    developerConnection = "scm:git:${project.vcsUrl}"
+                    url = project.url
+                }
+            }
+        }
+    }
+}
+
+release {
+    failOnUnversionedFiles = false
+    pushReleaseVersionBranch = "master"
+}
+
+bintray {
+    user = getProp("bintrayUser")
+    key = getProp("bintrayKey")
+
+    publish = true
+    override = true
+
+    pkg {
+        repo = "maven"
+        name = project.name
+//        userOrg = "rapidw"
+        licenses = ["Apache-2.0"]
+        vcsUrl = project.vcsUrl
+
+        version {
+            name = project.version
+
+            gpg {
+                sign = true
+                passphrase = getProp("signing.password")
+            }
+
+            mavenCentralSync {
+                sync = true
+                user = getProp("nexusUsername")
+                password = getProp("nexusPassword")
+                close = "1"
+            }
+        }
+    }
+
+    publications = ["mavenJava"]
+}
+
+afterReleaseBuild.dependsOn bintrayUpload
