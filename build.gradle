@@ -163,6 +163,7 @@ bintray {
 tasks.withType(com.github.spotbugs.SpotBugsTask) {
     reports.xml.enabled = false
     reports.html.enabled = true
+    ignoreFailures = true
 }
 
 afterReleaseBuild.dependsOn bintrayUpload
