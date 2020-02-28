@@ -8,6 +8,7 @@ plugins {
     id "net.researchgate.release" version "2.8.1"
     id "com.jfrog.bintray" version "1.8.4"
     id "com.github.spotbugs" version "3.0.0"
+    id "com.github.hierynomus.license" version "0.15.0"
 }
 
 group = "io.rapidw.mqtt"
@@ -56,6 +57,10 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
+}
+
+license {
+    header project.file("gradle/license-header")
 }
 
 javadoc {
