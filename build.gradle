@@ -1,3 +1,5 @@
+import org.gradle.api.publish.maven.internal.artifact.FileBasedMavenArtifact
+
 plugins {
     id "java-library"
     id "signing"
@@ -126,6 +128,13 @@ publishing {
     }
 }
 
+jar {
+    into("META-INF/maven/$project.group/$project.name") {
+        from generatePomFileForMavenJavaPublication
+        rename ".*", "pom.xml"
+    }
+}
+
 release {
     failOnUnversionedFiles = false
     pushReleaseVersionBranch = "master"
@@ -163,6 +172,24 @@ bintray {
     }
 
     publications = ["mavenJava"]
+}
+
+project.tasks.withType(com.jfrog.bintray.gradle.tasks.BintrayUploadTask) {
+    doFirst {
+        publishing.publications.withType(MavenPublication).each { publication ->
+            File moduleFile = project.buildDir.toPath()
+                .resolve("publications/${publication.name}/module.json").toFile()
+
+            if (moduleFile.exists()) {
+                publication.artifact(new FileBasedMavenArtifact(moduleFile) {
+                    @Override
+                    protected String getDefaultExtension() {
+                        return "module"
+                    }
+                })
+            }
+        }
+    }
 }
 
 tasks.withType(com.github.spotbugs.SpotBugsTask) {
