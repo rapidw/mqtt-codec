@@ -96,7 +96,7 @@ publishing {
             artifact javadocJar
 
             pom {
-                name = "$group:$name"
+                name = "$group:${project.name}"
                 description = project.description
                 url = project.url
 
