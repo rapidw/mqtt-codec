@@ -35,11 +35,7 @@ ext {
 }
 
 repositories {
-    mavenLocal()
-    maven {
-        url "https://maven.aliyun.com/repository/public/"
-        allowInsecureProtocol true
-    }
+    jcenter()
     mavenCentral()
 }
 
