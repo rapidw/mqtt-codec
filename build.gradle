@@ -124,6 +124,7 @@ publishing {
     }
 }
 
+// include pom in jar
 jar {
     into("META-INF/maven/$project.group/$project.name") {
         from generatePomFileForMavenJavaPublication
@@ -170,6 +171,7 @@ bintray {
     publications = ["mavenJava"]
 }
 
+// workaround for upload gradle module metadata to bintray
 project.tasks.withType(com.jfrog.bintray.gradle.tasks.BintrayUploadTask) {
     doFirst {
         publishing.publications.withType(MavenPublication).each { publication ->
