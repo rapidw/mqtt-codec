@@ -15,11 +15,11 @@
  */
 package io.rapidw.mqtt.codec.v3_1_1;
 
-public class MqttV311PingRespV311Packet extends MqttV311Packet {
+public class MqttV311PingRespPacket extends MqttV311Packet {
 
-    public static final MqttV311PingRespV311Packet INSTANCE = new MqttV311PingRespV311Packet();
+    public static final MqttV311PingRespPacket INSTANCE = new MqttV311PingRespPacket();
 
-    private MqttV311PingRespV311Packet() {
+    private MqttV311PingRespPacket() {
         super(MqttV311PacketType.PINGRESP);
     }
 }

@@ -65,7 +65,7 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
             case PINGREQ:
                 return encodePingReq(byteBufAllocator, (MqttV311PingReqPacket) packet);
             case PINGRESP:
-                return encodePingResp(byteBufAllocator, (MqttV311PingRespV311Packet) packet);
+                return encodePingResp(byteBufAllocator, (MqttV311PingRespPacket) packet);
             case DISCONNECT:
                 return encodeDisconnect(byteBufAllocator, (MqttV311DisconnectPacket) packet);
             default:
@@ -331,7 +331,7 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
         return buf;
     }
 
-    private static ByteBuf encodePingResp(ByteBufAllocator byteBufAllocator, MqttV311PingRespV311Packet packet) {
+    private static ByteBuf encodePingResp(ByteBufAllocator byteBufAllocator, MqttV311PingRespPacket packet) {
         Objects.requireNonNull(packet);
         ByteBuf buf = byteBufAllocator.buffer(2);
         buf.writeByte(0xD0);

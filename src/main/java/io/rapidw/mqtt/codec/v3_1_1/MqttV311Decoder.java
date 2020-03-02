@@ -88,7 +88,7 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
                         validatePacketWithoutVariableHeaderAndPayload();
                         break;
                     case PINGRESP:
-                        this.packet = MqttV311PingRespV311Packet.INSTANCE;
+                        this.packet = MqttV311PingRespPacket.INSTANCE;
                         validatePacketWithoutVariableHeaderAndPayload();
                         break;
                     case DISCONNECT:

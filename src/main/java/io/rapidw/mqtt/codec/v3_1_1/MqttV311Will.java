@@ -25,11 +25,9 @@ public class MqttV311Will {
     private boolean retain;
 
     MqttV311Will(String topic, MqttV311QosLevel qosLevel, byte[] message, boolean retain) {
-        Objects.requireNonNull(topic);
-        Objects.requireNonNull(message);
-        this.topic = topic;
+        this.topic = Objects.requireNonNull(topic);
         this.qosLevel = qosLevel;
-        this.message = message;
+        this.message = Objects.requireNonNull(message);
         this.retain = retain;
     }
 
@@ -63,8 +61,7 @@ public class MqttV311Will {
         }
 
         public MqttV311Will.MqttV311WillBuilder topic(String topic) {
-            Objects.requireNonNull(topic);
-            this.topic = topic;
+            this.topic = Objects.requireNonNull(topic);
             return this;
         }
 
@@ -74,8 +71,7 @@ public class MqttV311Will {
         }
 
         public MqttV311Will.MqttV311WillBuilder message(byte[] message) {
-            Objects.requireNonNull(message);
-            this.message = message;
+            this.message = Objects.requireNonNull(message);
             return this;
         }
 
