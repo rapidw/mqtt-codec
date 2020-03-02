@@ -5,7 +5,6 @@ plugins {
     id "signing"
     id "maven-publish"
     id 'jacoco'
-    id "io.freefair.lombok" version "5.0.0-rc2"
     id "me.champeau.gradle.jmh" version "0.5.0"
     id "net.researchgate.release" version "2.8.1"
     id "com.jfrog.bintray" version "1.8.4"
@@ -62,7 +61,6 @@ license {
 }
 
 javadoc {
-    source = sourceSets.main.delombokTask
     options {
         encoding = "UTF-8"
         locale "en_US"
@@ -78,22 +76,15 @@ tasks.withType(Test) {
     useJUnitPlatform()
 }
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.delombokTask
-    archiveClassifier.set "sources"
-}
-
-task javadocJar(type: Jar) {
-    from javadoc.destinationDir
-    archiveClassifier.set "javadoc"
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            artifact sourcesJar
-            artifact javadocJar
 
             pom {
                 name = "$group:${project.name}"

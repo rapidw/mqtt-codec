@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.rapidw.mqtt.codec;
+package io.rapidw.mqtt.codec.v3_1_1;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public class MqttV311DisconnectPacket extends MqttV311Packet {
 
-@Data
-@AllArgsConstructor
-public class MqttTopicAndQosLevel {
-  private String topicFilter;
-  private MqttQosLevel qosLevel;
+    public static final MqttV311DisconnectPacket INSTANCE = new MqttV311DisconnectPacket();
+
+    private MqttV311DisconnectPacket() {
+        super(MqttV311PacketType.DISCONNECT);
+    }
 }

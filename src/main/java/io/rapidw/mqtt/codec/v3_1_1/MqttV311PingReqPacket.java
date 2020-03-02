@@ -13,26 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.rapidw.mqtt.codec;
+package io.rapidw.mqtt.codec.v3_1_1;
 
-import java.util.List;
-import lombok.*;
+public class MqttV311PingReqPacket extends MqttV311Packet {
 
-@Getter
-@Setter(AccessLevel.PACKAGE)
-public class MqttUnsubscribePacket extends MqttPacket {
+    public static final MqttV311PingReqPacket INSTANCE = new MqttV311PingReqPacket();
 
-  private int packetId;
-  private List<String> topicFilters;
-
-  MqttUnsubscribePacket() {
-    super(MqttPacketType.UNSUBSCRIBE);
-  }
-
-  @Builder
-  private MqttUnsubscribePacket(@Singular List<String> topicFilters, int packetId) {
-    this();
-    this.topicFilters = topicFilters;
-    this.packetId = packetId;
-  }
+    private MqttV311PingReqPacket() {
+        super(MqttV311PacketType.PINGREQ);
+    }
 }

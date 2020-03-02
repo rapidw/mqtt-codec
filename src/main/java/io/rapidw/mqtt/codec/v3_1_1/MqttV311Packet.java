@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.rapidw.mqtt.codec;
+package io.rapidw.mqtt.codec.v3_1_1;
 
-public class MqttDisconnectPacket extends MqttPacket {
+public class MqttV311Packet {
+    protected MqttV311Packet(MqttV311PacketType type) {
+        this.type = type;
+    }
 
-  public static final MqttDisconnectPacket INSTANCE = new MqttDisconnectPacket();
+    protected MqttV311PacketType type;
 
-  private MqttDisconnectPacket() {
-    super(MqttPacketType.DISCONNECT);
-  }
+    public MqttV311PacketType getType() {
+        return type;
+    }
 }

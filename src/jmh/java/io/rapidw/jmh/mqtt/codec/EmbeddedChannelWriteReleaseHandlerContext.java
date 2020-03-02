@@ -24,58 +24,58 @@ import io.netty.util.ReferenceCounted;
 
 public abstract class EmbeddedChannelWriteReleaseHandlerContext
     extends EmbeddedChannelHandlerContext {
-  protected EmbeddedChannelWriteReleaseHandlerContext(
-      ByteBufAllocator alloc, ChannelHandler handler) {
-    this(alloc, handler, new EmbeddedChannel());
-  }
-
-  protected EmbeddedChannelWriteReleaseHandlerContext(
-      ByteBufAllocator alloc, ChannelHandler handler, EmbeddedChannel channel) {
-    super(alloc, handler, channel);
-  }
-
-  @Override
-  protected abstract void handleException(Throwable t);
-
-  @Override
-  public final ChannelFuture write(Object msg) {
-    return write(msg, newPromise());
-  }
-
-  @Override
-  public final ChannelFuture write(Object msg, ChannelPromise promise) {
-    try {
-      if (msg instanceof ReferenceCounted) {
-        ((ReferenceCounted) msg).release();
-        promise.setSuccess();
-      } else {
-        channel().write(msg, promise);
-      }
-    } catch (Exception e) {
-      promise.setFailure(e);
-      handleException(e);
+    protected EmbeddedChannelWriteReleaseHandlerContext(
+        ByteBufAllocator alloc, ChannelHandler handler) {
+        this(alloc, handler, new EmbeddedChannel());
     }
-    return promise;
-  }
 
-  @Override
-  public final ChannelFuture writeAndFlush(Object msg, ChannelPromise promise) {
-    try {
-      if (msg instanceof ReferenceCounted) {
-        ((ReferenceCounted) msg).release();
-        promise.setSuccess();
-      } else {
-        channel().writeAndFlush(msg, promise);
-      }
-    } catch (Exception e) {
-      promise.setFailure(e);
-      handleException(e);
+    protected EmbeddedChannelWriteReleaseHandlerContext(
+        ByteBufAllocator alloc, ChannelHandler handler, EmbeddedChannel channel) {
+        super(alloc, handler, channel);
     }
-    return promise;
-  }
 
-  @Override
-  public final ChannelFuture writeAndFlush(Object msg) {
-    return writeAndFlush(msg, newPromise());
-  }
+    @Override
+    protected abstract void handleException(Throwable t);
+
+    @Override
+    public final ChannelFuture write(Object msg) {
+        return write(msg, newPromise());
+    }
+
+    @Override
+    public final ChannelFuture write(Object msg, ChannelPromise promise) {
+        try {
+            if (msg instanceof ReferenceCounted) {
+                ((ReferenceCounted) msg).release();
+                promise.setSuccess();
+            } else {
+                channel().write(msg, promise);
+            }
+        } catch (Exception e) {
+            promise.setFailure(e);
+            handleException(e);
+        }
+        return promise;
+    }
+
+    @Override
+    public final ChannelFuture writeAndFlush(Object msg, ChannelPromise promise) {
+        try {
+            if (msg instanceof ReferenceCounted) {
+                ((ReferenceCounted) msg).release();
+                promise.setSuccess();
+            } else {
+                channel().writeAndFlush(msg, promise);
+            }
+        } catch (Exception e) {
+            promise.setFailure(e);
+            handleException(e);
+        }
+        return promise;
+    }
+
+    @Override
+    public final ChannelFuture writeAndFlush(Object msg) {
+        return writeAndFlush(msg, newPromise());
+    }
 }
