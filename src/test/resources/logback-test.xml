@@ -24,7 +24,7 @@
         </encoder>
     </appender>
 
-    <logger name="io.waferproject.mqtt.codec" level="debug"/>
+    <logger name="io.rapidw.mqtt.codec" level="debug"/>
 
     <root level="info">
         <appender-ref ref="STDOUT" />
