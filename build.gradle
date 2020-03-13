@@ -2,7 +2,6 @@ import org.gradle.api.publish.maven.internal.artifact.FileBasedMavenArtifact
 
 plugins {
     id "java-library"
-    id "signing"
     id "maven-publish"
     id 'jacoco'
     id "me.champeau.gradle.jmh" version "0.5.0"
