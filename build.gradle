@@ -188,20 +188,19 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
 }
 
 artifactory {
-    contextUrl = 'https://oss.jfrog.org/artifactory'   //The base Artifactory URL if not overridden by the publisher/resolver
+    contextUrl = 'https://oss.jfrog.org/artifactory'
     publish {
         repository {
-            repoKey = 'oss-snapshot-local'   //The Artifactory repository key to publish to
-            username = bintrayUser        //The publisher user name
-            password = bintrayKey       //The publisher password or API key
+            repoKey = 'oss-snapshot-local'
+            username = getProp("bintrayUser")
+            password = getProp("bintrayKey")
         }
         defaults {
             publications 'mavenJava'
-            ////List of Gradle Configurations (names or objects) from which to collect the list of artifacts to be deployed to Artifactory.
-            publishBuildInfo = true   //Publish build-info to Artifactory (true by default)
-            publishArtifacts = true   //Publish artifacts to Artifactory (true by default)
-            publishPom = true   //Publish generated POM files to Artifactory (true by default).
-            publishIvy = false   //Publish generated Ivy descriptor files to Artifactory (true by default).
+            publishBuildInfo = true
+            publishArtifacts = true
+            publishPom = true
+            publishIvy = false
         }
     }
 }
