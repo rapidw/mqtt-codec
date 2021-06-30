@@ -233,7 +233,7 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
             willBuilder.qosLevel(MqttV311QosLevel.of((b & 0x18) >> 3));
             willBuilder.retain(isSet(b, 5));
             packet.setWillBuilder(willBuilder);
-        } else if (!isSet(b, 3) && !isSet(b, 4) && !isSet(b, 5)) {
+        } else if (isSet(b, 3) || isSet(b, 4) || isSet(b, 5)) {
             throw new DecoderException(
                 "[MQTT-3.1.2-11] If the Will Flag is set to 0 the Will QoS and Will Retain fields in the Connect Flags MUST be set to zero");
         }
