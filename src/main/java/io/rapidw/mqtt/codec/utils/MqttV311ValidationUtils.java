@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.rapidw.mqtt.codec.v3_1_1;
+package io.rapidw.mqtt.codec.utils;
 
+import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
-class MqttV311ValidationUtils {
+public class MqttV311ValidationUtils {
 
     public static <T> T requireNonNull(T obj, String name) {
         if (obj == null) {
@@ -156,5 +157,11 @@ class MqttV311ValidationUtils {
 
     private static boolean containNullCharacter(String str) {
         return str.chars().anyMatch(value -> value == Character.MIN_VALUE);
+    }
+
+    public static void validatePacketWithoutVariableHeaderAndPayload(short flags, int remainingLength) {
+        if (flags != 0 || remainingLength != 0) {
+            throw new DecoderException("invalid packet without varheader and payload");
+        }
     }
 }

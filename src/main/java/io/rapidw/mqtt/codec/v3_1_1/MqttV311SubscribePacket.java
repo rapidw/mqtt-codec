@@ -15,6 +15,8 @@
  */
 package io.rapidw.mqtt.codec.v3_1_1;
 
+import io.netty.handler.codec.DecoderException;
+
 import java.util.List;
 
 public class MqttV311SubscribePacket extends MqttV311Packet {
@@ -22,7 +24,14 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
     private int packetId;
     private List<MqttV311TopicAndQosLevel> mqttV311TopicAndQosLevels;
 
-    MqttV311SubscribePacket() {
+    MqttV311SubscribePacket(short flags) {
+        super(MqttV311PacketType.SUBSCRIBE);
+        if (flags != 2) {
+            throw new DecoderException("[MQTT-3.8.1-1] invalid SUBSCRIBE flags");
+        }
+    }
+
+    private MqttV311SubscribePacket() {
         super(MqttV311PacketType.SUBSCRIBE);
     }
 

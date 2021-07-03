@@ -15,6 +15,8 @@
  */
 package io.rapidw.mqtt.codec.v3_1_1;
 
+import io.netty.handler.codec.DecoderException;
+
 public class MqttV311ConnectPacket extends MqttV311Packet {
 
     private boolean cleanSession;
@@ -30,7 +32,14 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
 
     private boolean passwordFlag;
 
-    MqttV311ConnectPacket() {
+    MqttV311ConnectPacket(short flags) {
+        super(MqttV311PacketType.CONNECT);
+        if ((flags & 0x0F) != 0) {
+            throw new DecoderException("[MQTT-3.1.2-3] CONNECT packet reversed flag is not zero");
+        }
+    }
+
+    private MqttV311ConnectPacket() {
         super(MqttV311PacketType.CONNECT);
     }
 

@@ -15,11 +15,22 @@
  */
 package io.rapidw.mqtt.codec.v3_1_1;
 
+import io.netty.handler.codec.DecoderException;
+
 public class MqttV311ConnAckPacket extends MqttV311Packet {
     private boolean sessionPresent;
     private MqttV311ConnectReturnCode connectReturnCode;
 
-    MqttV311ConnAckPacket() {
+    MqttV311ConnAckPacket(short flags, int remainingLength) {
+        super(MqttV311PacketType.CONNACK);
+        if (flags != 0) {
+            throw new DecoderException("invalid CONACK fixed header flags");
+        }
+        if (remainingLength != 2) {
+            throw new DecoderException("invalid CONACK remaining length");
+        }
+    }
+    private MqttV311ConnAckPacket() {
         super(MqttV311PacketType.CONNACK);
     }
 

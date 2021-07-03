@@ -15,6 +15,8 @@
  */
 package io.rapidw.mqtt.codec.v3_1_1;
 
+import io.netty.handler.codec.DecoderException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +26,14 @@ public class MqttV311SubAckPacket extends MqttV311Packet {
     private int packetId;
     private List<MqttV311QosLevel> qosLevels;
 
-    MqttV311SubAckPacket() {
+    MqttV311SubAckPacket(short flags) {
+        super(MqttV311PacketType.SUBACK);
+        if (flags != 0) {
+            throw new DecoderException("invalid SUBACK packet flags");
+        }
+    }
+
+    private MqttV311SubAckPacket() {
         super(MqttV311PacketType.SUBACK);
     }
 

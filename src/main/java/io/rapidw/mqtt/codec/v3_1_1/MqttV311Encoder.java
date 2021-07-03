@@ -21,6 +21,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.EncoderException;
 import io.netty.handler.codec.MessageToMessageEncoder;
+import io.rapidw.mqtt.codec.utils.MqttV311ValidationUtils;
 import org.slf4j.Logger;
 
 import java.util.LinkedList;

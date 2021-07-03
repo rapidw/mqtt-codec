@@ -19,13 +19,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.ReplayingDecoder;
+import io.rapidw.mqtt.codec.utils.DecoderUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
-import static io.rapidw.mqtt.codec.v3_1_1.MqttV311ValidationUtils.validatePacketId;
-import static io.rapidw.mqtt.codec.v3_1_1.MqttV311ValidationUtils.validateTopicFilter;
+import static io.rapidw.mqtt.codec.utils.DecoderUtils.*;
+import static io.rapidw.mqtt.codec.utils.MqttV311ValidationUtils.*;
 
 public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderState> {
 
@@ -49,51 +49,43 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
             case READ_FIXED_HEADER:
                 short b1 = in.readUnsignedByte();
                 this.flags = (short) (b1 & 0x0F);
-                this.remainingLength = readRemainingLength(in);
+                this.remainingLength = DecoderUtils.readRemainingLength(in);
                 switch (MqttV311PacketType.of(b1 >> 4)) {
                     case CONNECT:
-                        this.packet = new MqttV311ConnectPacket();
-                        validateConnect();
+                        this.packet = new MqttV311ConnectPacket(flags);
                         break;
                     case CONNACK:
-                        this.packet = new MqttV311ConnAckPacket();
-                        validateConnAck();
+                        this.packet = new MqttV311ConnAckPacket(flags, remainingLength);
                         break;
                     case PUBLISH:
                         this.packet = new MqttV311PublishPacket();
-                        // PUBLISH packet does not need to validate
                         break;
                     case PUBACK:
-                        this.packet = new MqttV311PubAckPacket();
-                        validatePubAck();
+                        this.packet = new MqttV311PubAckPacket(flags, remainingLength);
                         break;
                     case SUBSCRIBE:
-                        this.packet = new MqttV311SubscribePacket();
-                        validateSubscribe();
+                        this.packet = new MqttV311SubscribePacket(flags);
                         break;
                     case SUBACK:
-                        this.packet = new MqttV311SubAckPacket();
-                        validateSubAck();
+                        this.packet = new MqttV311SubAckPacket(flags);
                         break;
                     case UNSUBSCRIBE:
-                        this.packet = new MqttV311UnsubscribePacket();
-                        validateUnsubscribe();
+                        this.packet = new MqttV311UnsubscribePacket(flags);
                         break;
                     case UNSUBACK:
-                        this.packet = new MqttV311UnsubAckPacket();
-                        validateUnsubAck();
+                        this.packet = new MqttV311UnsubAckPacket(flags, remainingLength);
                         break;
                     case PINGREQ:
                         this.packet = MqttV311PingReqPacket.INSTANCE;
-                        validatePacketWithoutVariableHeaderAndPayload();
+                        validatePacketWithoutVariableHeaderAndPayload(flags, remainingLength);
                         break;
                     case PINGRESP:
                         this.packet = MqttV311PingRespPacket.INSTANCE;
-                        validatePacketWithoutVariableHeaderAndPayload();
+                        validatePacketWithoutVariableHeaderAndPayload(flags, remainingLength);
                         break;
                     case DISCONNECT:
                         this.packet = MqttV311DisconnectPacket.INSTANCE;
-                        validatePacketWithoutVariableHeaderAndPayload();
+                        validatePacketWithoutVariableHeaderAndPayload(flags, remainingLength);
                         break;
                 }
                 checkpoint(DecoderState.READ_VARIABLE_HEADER);
@@ -145,69 +137,10 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
         }
     }
 
-    // --------------------------------------------------------------
-
-    private void validatePacketWithoutVariableHeaderAndPayload() {
-        if (this.flags != 0 || this.remainingLength != 0) {
-            throw new DecoderException("invalid packet without varheader and payload");
-        }
-    }
-
-    private void validateConnect() {
-        if ((flags & 0x0F) != 0) {
-            throw new DecoderException("[MQTT-3.1.2-3] CONNECT packet reversed flag is not zero");
-        }
-    }
-
-    private void validateConnAck() {
-        if (flags != 0) {
-            throw new DecoderException("invalid CONACK fixed header flags");
-        }
-        if (this.remainingLength != 2) {
-            throw new DecoderException("invalid CONACK remaining length");
-        }
-    }
-
-    private void validatePubAck() {
-        if (flags != 0) {
-            throw new DecoderException("invalid PUBACK fixed header flags");
-        }
-        if (remainingLength != 2) {
-            throw new DecoderException("invalid CONACK remaining length");
-        }
-    }
-
-    private void validateSubscribe() {
-        if (this.flags != 2) {
-            throw new DecoderException("[MQTT-3.8.1-1] invalid SUBSCRIBE flags");
-        }
-    }
-
-    private void validateSubAck() {
-        if (this.flags != 0) {
-            throw new DecoderException("invalid SUBACK packet flags");
-        }
-    }
-
-    private void validateUnsubscribe() {
-        if (this.flags != 2) {
-            throw new DecoderException("[MQTT-3.10.1-1] invalid unsubscribe flags");
-        }
-    }
-
-    private void validateUnsubAck() {
-        if (this.flags != 0) {
-            throw new DecoderException("invalid unsuback flags");
-        }
-        if (this.remainingLength != 2) {
-            throw new DecoderException("invalid unsuback remaining length");
-        }
-    }
-
     // -------------------------------------------------
 
     private void readConnectVariableHeader(ByteBuf buf, MqttV311ConnectPacket packet) {
-        DecodedResult<String> protocolName = readString(buf);
+        DecoderUtils.DecodedResult<String> protocolName = readString(buf);
         if (!protocolName.getValue().equals("MQTT")) {
             throw new DecoderException("[MQTT-3.1.2-1] invalid protocol name");
         }
@@ -246,30 +179,30 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
     private void readConnectPayload(ByteBuf buf, MqttV311ConnectPacket packet) {
         DecodedResult<String> clientId = readString(buf);
 
-        packet.setClientId(clientId.value);
-        this.remainingLength -= clientId.bytesConsumed;
+        packet.setClientId(clientId.getValue());
+        this.remainingLength -= clientId.getBytesConsumed();
 
         MqttV311Will.MqttV311WillBuilder willBuilder = packet.getWillBuilder();
         if (willBuilder != null) {
             DecodedResult<String> willTopic = readString(buf);
-            willBuilder.topic(willTopic.value);
-            this.remainingLength -= willTopic.bytesConsumed;
+            willBuilder.topic(willTopic.getValue());
+            this.remainingLength -= willTopic.getBytesConsumed();
 
             DecodedResult<byte[]> willMessage = readByteArray(buf);
-            willBuilder.message(willMessage.value);
-            this.remainingLength -= willMessage.bytesConsumed;
+            willBuilder.message(willMessage.getValue());
+            this.remainingLength -= willMessage.getBytesConsumed();
 
             packet.setWill(willBuilder.build());
         }
         if (packet.isUsernameFlag()) {
             DecodedResult<String> username = readString(buf);
-            packet.setUsername(username.value);
-            this.remainingLength -= username.bytesConsumed;
+            packet.setUsername(username.getValue());
+            this.remainingLength -= username.getBytesConsumed();
         }
         if (packet.isPasswordFlag()) {
             DecodedResult<byte[]> password = readByteArray(buf);
-            packet.setPassword(password.value);
-            this.remainingLength -= password.bytesConsumed;
+            packet.setPassword(password.getValue());
+            this.remainingLength -= password.getBytesConsumed();
         }
         if (this.remainingLength != 0) {
             throw new DecoderException("invalid remaining length in connect packet");
@@ -294,8 +227,8 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
 
     private void readSubAckVariableHeader(ByteBuf buf, MqttV311SubAckPacket packet) {
         DecodedResult<Integer> packetId = readPacketId(buf);
-        this.remainingLength -= packetId.bytesConsumed;
-        packet.setPacketId((packetId.value));
+        this.remainingLength -= packetId.getBytesConsumed();
+        packet.setPacketId((packetId.getValue()));
     }
 
     private void readSubAckPayload(ByteBuf buf, MqttV311SubAckPacket packet) {
@@ -321,13 +254,13 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
         packet.setQosLevel(qosLevel);
 
         DecodedResult<String> topic = readString(buf);
-        packet.setTopic(topic.value);
-        this.remainingLength -= topic.bytesConsumed;
+        packet.setTopic(topic.getValue());
+        this.remainingLength -= topic.getBytesConsumed();
         if (packet.getQosLevel() == MqttV311QosLevel.AT_LEAST_ONCE
             || packet.getQosLevel() == MqttV311QosLevel.EXACTLY_ONCE) {
             DecodedResult<Integer> packetId = readPacketId(buf);
             packet.setPacketId(packetId.getValue());
-            this.remainingLength -= packetId.bytesConsumed;
+            this.remainingLength -= packetId.getBytesConsumed();
         }
 
         byte[] payload = new byte[this.remainingLength];
@@ -338,14 +271,14 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
     private void readSubscribeVariableHeader(ByteBuf buf, MqttV311SubscribePacket packet) {
         DecodedResult<Integer> packetId = readMsbLsb(buf);
         packet.setPacketId(packetId.getValue());
-        this.remainingLength -= packetId.bytesConsumed;
+        this.remainingLength -= packetId.getBytesConsumed();
     }
 
     private void readSubscribePayload(ByteBuf buf, MqttV311SubscribePacket packet) {
         boolean finish = false;
         while (!finish) {
             DecodedResult<String> topicFilter = readString(buf);
-            this.remainingLength -= topicFilter.bytesConsumed;
+            this.remainingLength -= topicFilter.getBytesConsumed();
             short b = buf.readUnsignedByte();
             if ((b & 0xFC) != 0) {
                 throw new DecoderException("[MQTT-3-8.3-4] Reserved bits in the payload must be zero");
@@ -365,8 +298,8 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
 
     private void readUnsubscribeVariableHeader(ByteBuf buf, MqttV311UnsubscribePacket packet) {
         DecodedResult<Integer> packetId = readMsbLsb(buf);
-        packet.setPacketId(packetId.value);
-        this.remainingLength -= packetId.bytesConsumed;
+        packet.setPacketId(packetId.getValue());
+        this.remainingLength -= packetId.getBytesConsumed();
     }
 
     private void readUnsubscribePayload(ByteBuf buf, MqttV311UnsubscribePacket packet) {
@@ -374,8 +307,8 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
         while (this.remainingLength > 0) {
             DecodedResult<String> topicFiler = readString(buf);
 
-            topicFilters.add(validateTopicFilter(topicFiler.value));
-            this.remainingLength -= topicFiler.bytesConsumed;
+            topicFilters.add(validateTopicFilter(topicFiler.getValue()));
+            this.remainingLength -= topicFiler.getBytesConsumed();
         }
 
         if (this.remainingLength != 0) {
@@ -385,95 +318,11 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
 
     private void readUnsubAckVariableHeader(ByteBuf buf, MqttV311UnsubAckPacket packet) {
         DecodedResult<Integer> packetId = readMsbLsb(buf);
-        packet.setPacketId(packetId.value);
+        packet.setPacketId(packetId.getValue());
     }
 
     private void readPubAckVariableHeader(ByteBuf buf, MqttV311PubAckPacket packet) {
         DecodedResult<Integer> packetId = readMsbLsb(buf);
-        packet.setPacketId(packetId.value);
-    }
-
-    // ------------------------------------------------------------------------------------------------
-
-    private static DecodedResult<String> readString(ByteBuf buffer) {
-        DecodedResult<Integer> decodedSize = readMsbLsb(buffer);
-        int size = decodedSize.value;
-        int bytesConsumed = decodedSize.bytesConsumed;
-
-        String s = buffer.toString(buffer.readerIndex(), size, StandardCharsets.UTF_8);
-        buffer.skipBytes(size);
-        bytesConsumed += size;
-        return new DecodedResult<>(s, bytesConsumed);
-    }
-
-    private static DecodedResult<Integer> readMsbLsb(ByteBuf buffer) {
-        short msbSize = buffer.readUnsignedByte();
-        short lsbSize = buffer.readUnsignedByte();
-        int bytesConsumed = 2;
-        int result = msbSize << 8 | lsbSize;
-        if (result < 0 || result > 65535) {
-            throw new DecoderException("invalid MSB LSB value: " + result);
-        }
-        return new DecodedResult<>(result, bytesConsumed);
-    }
-
-    private static DecodedResult<byte[]> readByteArray(ByteBuf buffer) {
-        DecodedResult<Integer> decodedSize = readMsbLsb(buffer);
-        int size = decodedSize.value;
-        byte[] bytes = new byte[size];
-        buffer.readBytes(bytes);
-        return new DecodedResult<>(bytes, decodedSize.bytesConsumed + size);
-    }
-
-    private static DecodedResult<Integer> readPacketId(ByteBuf buffer) {
-        final DecodedResult<Integer> packetId = readMsbLsb(buffer);
-        validatePacketId(packetId.getValue());
-        return packetId;
-    }
-
-    private static boolean isSet(short b, int pos) {
-        return (b & (1 << pos)) != 0;
-    }
-
-    private int readRemainingLength(ByteBuf buf) {
-        int remainingLength = 0;
-        int multiplier = 1;
-        short digit;
-        int loops = 0;
-        do {
-            digit = buf.readUnsignedByte();
-            remainingLength += (digit & 127) * multiplier;
-            multiplier *= 128;
-            loops++;
-        } while ((digit & 128) != 0 && loops < 4);
-
-        // MQTT protocol limits Remaining Length to 4 bytes
-        if (loops == 4 && (digit & 128) != 0) {
-            throw new DecoderException("remaining length exceeds 4 digits");
-        }
-        return remainingLength;
-    }
-
-    // -------------------------------------------------------------------------------------
-
-    private static final class DecodedResult<T> {
-
-        public static DecodedResult<Void> EMPTY = new DecodedResult<>(null, 0);
-
-        private final T value;
-        private final int bytesConsumed;
-
-        public DecodedResult(T value, int bytesConsumed) {
-            this.value = value;
-            this.bytesConsumed = bytesConsumed;
-        }
-
-        public T getValue() {
-            return value;
-        }
-
-        public int getBytesConsumed() {
-            return bytesConsumed;
-        }
+        packet.setPacketId(packetId.getValue());
     }
 }

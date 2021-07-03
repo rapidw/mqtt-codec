@@ -17,7 +17,7 @@ package io.rapidw.mqtt.codec.v3_1_1;
 
 import org.junit.jupiter.api.Test;
 
-import static io.rapidw.mqtt.codec.v3_1_1.MqttV311ValidationUtils.validateAndEncodeTopicFilter;
+import static io.rapidw.mqtt.codec.utils.MqttV311ValidationUtils.validateAndEncodeTopicFilter;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 

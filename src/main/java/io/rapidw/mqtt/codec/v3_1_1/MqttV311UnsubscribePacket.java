@@ -15,6 +15,8 @@
  */
 package io.rapidw.mqtt.codec.v3_1_1;
 
+import io.netty.handler.codec.DecoderException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +26,14 @@ public class MqttV311UnsubscribePacket extends MqttV311Packet {
     private int packetId;
     private List<String> topicFilters;
 
-    MqttV311UnsubscribePacket() {
+    MqttV311UnsubscribePacket(short flags) {
+        super(MqttV311PacketType.UNSUBSCRIBE);
+        if (flags != 2) {
+            throw new DecoderException("[MQTT-3.10.1-1] invalid unsubscribe flags");
+        }
+    }
+
+    private MqttV311UnsubscribePacket() {
         super(MqttV311PacketType.UNSUBSCRIBE);
     }
 

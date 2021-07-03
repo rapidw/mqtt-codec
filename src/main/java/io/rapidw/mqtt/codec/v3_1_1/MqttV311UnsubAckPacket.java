@@ -15,11 +15,23 @@
  */
 package io.rapidw.mqtt.codec.v3_1_1;
 
+import io.netty.handler.codec.DecoderException;
+
 public class MqttV311UnsubAckPacket extends MqttV311Packet {
 
     private int packetId;
 
-    MqttV311UnsubAckPacket() {
+    MqttV311UnsubAckPacket(short flags, int remainingLength) {
+        super(MqttV311PacketType.UNSUBACK);
+        if (flags != 0) {
+            throw new DecoderException("invalid unsuback flags");
+        }
+        if (remainingLength != 2) {
+            throw new DecoderException("invalid unsuback remaining length");
+        }
+    }
+
+    private MqttV311UnsubAckPacket() {
         super(MqttV311PacketType.UNSUBACK);
     }
 
