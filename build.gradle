@@ -5,7 +5,7 @@ plugins {
     id 'jacoco'
     id "me.champeau.jmh" version "0.6.5"
     id "net.researchgate.release" version "2.8.1"
-    id "com.github.spotbugs" version "3.0.0"
+//    id "com.github.spotbugs" version "4.7.3"
     id "com.github.hierynomus.license" version "0.16.1"
 }
 
@@ -120,11 +120,15 @@ release {
     pushReleaseVersionBranch = "master"
 }
 
-tasks.withType(com.github.spotbugs.SpotBugsTask) {
-    reports.xml.required = false
-    reports.html.required = true
-    ignoreFailures = true
-}
+//spotbugsMain {
+//    reports {
+//        html {
+//            enabled = true
+//            destination = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+//            stylesheet = 'fancy-hist.xsl'
+//        }
+//    }
+//}
 
 signing {
     sign publishing.publications
