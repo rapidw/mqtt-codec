@@ -133,3 +133,5 @@ release {
 signing {
     sign publishing.publications
 }
+
+afterReleaseBuild.dependsOn publish
