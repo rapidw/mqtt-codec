@@ -17,6 +17,7 @@ package io.rapidw.mqtt.codec.v3_1_1;
 
 import io.netty.handler.codec.DecoderException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MqttV311SubscribePacket extends MqttV311Packet {
@@ -73,8 +74,26 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
             return this;
         }
 
+        public MqttV311SubscribePacket.MqttV311SubscribePacketBuilder topicAndQosLevel(MqttV311TopicAndQosLevel topicAndQosLevels) {
+            if (this.topicAndQosLevels == null) {
+                this.topicAndQosLevels = new ArrayList<>();
+            }
+            this.topicAndQosLevels.add(topicAndQosLevels);
+            return this;
+        }
+
         public MqttV311SubscribePacket.MqttV311SubscribePacketBuilder topicAndQosLevels(List<MqttV311TopicAndQosLevel> topicAndQosLevels) {
-            this.topicAndQosLevels = topicAndQosLevels;
+            if (this.topicAndQosLevels == null) {
+                this.topicAndQosLevels = new ArrayList<>();
+            }
+            this.topicAndQosLevels.addAll(topicAndQosLevels);
+            return this;
+        }
+
+        public MqttV311SubscribePacket.MqttV311SubscribePacketBuilder clearTopicAndQosLevels() {
+            if (this.topicAndQosLevels != null) {
+                this.topicAndQosLevels.clear();
+            }
             return this;
         }
 
