@@ -285,9 +285,6 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
                 throw new DecoderException("[MQTT-3-8.3-4] Reserved bits in the payload must be zero");
             }
             this.remainingLength -= 1;
-            if (packet.getMqttV311TopicAndQosLevels() == null) {
-                packet.setMqttV311TopicAndQosLevels(new ArrayList<>());
-            }
             packet.getMqttV311TopicAndQosLevels().add(new MqttV311TopicAndQosLevel(topicFilter.getValue(), MqttV311QosLevel.of(b & 0x03)));
             if (remainingLength == 0) {
                 finish = true;

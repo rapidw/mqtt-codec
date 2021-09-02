@@ -39,7 +39,11 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
     private MqttV311SubscribePacket(int packetId, List<MqttV311TopicAndQosLevel> topicAndQosLevels) {
         this();
         this.packetId = packetId;
-        this.mqttV311TopicAndQosLevels = topicAndQosLevels;
+        if (topicAndQosLevels == null) {
+            this.mqttV311TopicAndQosLevels = new ArrayList<>();
+        } else {
+            this.mqttV311TopicAndQosLevels = topicAndQosLevels;
+        }
     }
 
     public static MqttV311SubscribePacketBuilder builder() {
