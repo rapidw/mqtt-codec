@@ -145,10 +145,10 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
         }
         buf.writeByte(b);
 
-        if (packet.getKeepaliveSeconds() < 0 || packet.getKeepaliveSeconds() > 65535) {
+        if (packet.getKeepAliveSeconds() < 0 || packet.getKeepAliveSeconds() > 65535) {
             throw new EncoderException("invalid keepalive seconds");
         }
-        buf.writeShort(packet.getKeepaliveSeconds());
+        buf.writeShort(packet.getKeepAliveSeconds());
 
         if (packet.getClientId().length() > 65535) {
             throw new EncoderException("invalid client id");
@@ -184,7 +184,7 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
         int variablePartSize = 2;
         int payloadCount = 0;
         for (MqttV311TopicAndQosLevel payload :
-            MqttV311ValidationUtils.requireNonNull(packet.getMqttV311TopicAndQosLevels(), "topic and qos list")) {
+            MqttV311ValidationUtils.requireNonNull(packet.getTopicAndQosLevels(), "topic and qos list")) {
             byte[] topicFilterBytes =
                 MqttV311ValidationUtils.validateAndEncodeTopicFilter(payload.getTopicFilter());
             if (payload.getQosLevel() == MqttV311QosLevel.FAILURE) {
@@ -206,8 +206,8 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
 
         buf.writeShort(MqttV311ValidationUtils.validatePacketId(packet.getPacketId()));
 
-        for (int i = 0; i < packet.getMqttV311TopicAndQosLevels().size(); i++) {
-            MqttV311TopicAndQosLevel payload = packet.getMqttV311TopicAndQosLevels().get(i);
+        for (int i = 0; i < packet.getTopicAndQosLevels().size(); i++) {
+            MqttV311TopicAndQosLevel payload = packet.getTopicAndQosLevels().get(i);
             byte[] topicFilterBytes = topicFilterBytesList.get(i);
 
             writeStringBytes(buf, topicFilterBytes, "topic filter");

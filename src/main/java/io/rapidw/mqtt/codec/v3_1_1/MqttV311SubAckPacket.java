@@ -43,8 +43,8 @@ public class MqttV311SubAckPacket extends MqttV311Packet {
         this.qosLevels = qosLevels;
     }
 
-    public static MqttV311SubAckPacketBuilder builder() {
-        return new MqttV311SubAckPacketBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public int getPacketId() {
@@ -63,31 +63,31 @@ public class MqttV311SubAckPacket extends MqttV311Packet {
         this.qosLevels = qosLevels;
     }
 
-    public static class MqttV311SubAckPacketBuilder {
+    public static class Builder {
         private int packetId;
         private ArrayList<MqttV311QosLevel> qosLevels;
 
-        MqttV311SubAckPacketBuilder() {
+        Builder() {
         }
 
-        public MqttV311SubAckPacket.MqttV311SubAckPacketBuilder packetId(int packetId) {
+        public Builder packetId(int packetId) {
             this.packetId = packetId;
             return this;
         }
 
-        public MqttV311SubAckPacket.MqttV311SubAckPacketBuilder qosLevel(MqttV311QosLevel qosLevel) {
+        public Builder qosLevel(MqttV311QosLevel qosLevel) {
             if (this.qosLevels == null) this.qosLevels = new ArrayList<MqttV311QosLevel>();
             this.qosLevels.add(qosLevel);
             return this;
         }
 
-        public MqttV311SubAckPacket.MqttV311SubAckPacketBuilder qosLevels(Collection<? extends MqttV311QosLevel> qosLevels) {
+        public Builder qosLevels(Collection<? extends MqttV311QosLevel> qosLevels) {
             if (this.qosLevels == null) this.qosLevels = new ArrayList<MqttV311QosLevel>();
             this.qosLevels.addAll(qosLevels);
             return this;
         }
 
-        public MqttV311SubAckPacket.MqttV311SubAckPacketBuilder clearQosLevels() {
+        public Builder clearQosLevels() {
             if (this.qosLevels != null)
                 this.qosLevels.clear();
             return this;

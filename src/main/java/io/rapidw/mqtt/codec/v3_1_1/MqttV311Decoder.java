@@ -21,7 +21,6 @@ import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.ReplayingDecoder;
 import io.rapidw.mqtt.codec.utils.DecoderUtils;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -163,7 +162,7 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
         packet.setPasswordFlag(passwordFlag);
 
         if (isSet(b, 2)) {
-            MqttV311Will.MqttV311WillBuilder willBuilder = MqttV311Will.builder();
+            MqttV311Will.Builder willBuilder = MqttV311Will.builder();
             willBuilder.qosLevel(MqttV311QosLevel.of((b & 0x18) >> 3));
             willBuilder.retain(isSet(b, 5));
             packet.setWillBuilder(willBuilder);
@@ -173,7 +172,7 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
         }
 
         DecodedResult<Integer> keepaliveSeconds = readMsbLsb(buf);
-        packet.setKeepaliveSeconds(keepaliveSeconds.getValue());
+        packet.setKeepAliveSeconds(keepaliveSeconds.getValue());
         this.remainingLength -= 10;
     }
 
@@ -183,7 +182,7 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
         packet.setClientId(clientId.getValue());
         this.remainingLength -= clientId.getBytesConsumed();
 
-        MqttV311Will.MqttV311WillBuilder willBuilder = packet.getWillBuilder();
+        MqttV311Will.Builder willBuilder = packet.getWillBuilder();
         if (willBuilder != null) {
             DecodedResult<String> willTopic = readString(buf);
             willBuilder.topic(willTopic.getValue());
@@ -285,7 +284,7 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
                 throw new DecoderException("[MQTT-3-8.3-4] Reserved bits in the payload must be zero");
             }
             this.remainingLength -= 1;
-            packet.getMqttV311TopicAndQosLevels().add(new MqttV311TopicAndQosLevel(topicFilter.getValue(), MqttV311QosLevel.of(b & 0x03)));
+            packet.getTopicAndQosLevels().add(new MqttV311TopicAndQosLevel(topicFilter.getValue(), MqttV311QosLevel.of(b & 0x03)));
             if (remainingLength == 0) {
                 finish = true;
             }

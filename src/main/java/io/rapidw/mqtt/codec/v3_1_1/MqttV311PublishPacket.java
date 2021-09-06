@@ -44,8 +44,8 @@ public class MqttV311PublishPacket extends MqttV311Packet {
         this.payload = payload;
     }
 
-    public static MqttV311PublishPacketBuilder builder() {
-        return new MqttV311PublishPacketBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public boolean isDupFlag() {
@@ -96,7 +96,7 @@ public class MqttV311PublishPacket extends MqttV311Packet {
         this.payload = payload;
     }
 
-    public static class MqttV311PublishPacketBuilder {
+    public static class Builder {
         private boolean dupFlag;
         private MqttV311QosLevel qosLevel;
         private boolean retain;
@@ -104,35 +104,35 @@ public class MqttV311PublishPacket extends MqttV311Packet {
         private int packetId;
         private byte[] payload;
 
-        MqttV311PublishPacketBuilder() {
+        Builder() {
         }
 
-        public MqttV311PublishPacket.MqttV311PublishPacketBuilder dupFlag(boolean dupFlag) {
+        public Builder dupFlag(boolean dupFlag) {
             this.dupFlag = dupFlag;
             return this;
         }
 
-        public MqttV311PublishPacket.MqttV311PublishPacketBuilder qosLevel(MqttV311QosLevel qosLevel) {
+        public Builder qosLevel(MqttV311QosLevel qosLevel) {
             this.qosLevel = qosLevel;
             return this;
         }
 
-        public MqttV311PublishPacket.MqttV311PublishPacketBuilder retain(boolean retain) {
+        public Builder retain(boolean retain) {
             this.retain = retain;
             return this;
         }
 
-        public MqttV311PublishPacket.MqttV311PublishPacketBuilder topic(String topic) {
+        public Builder topic(String topic) {
             this.topic = topic;
             return this;
         }
 
-        public MqttV311PublishPacket.MqttV311PublishPacketBuilder packetId(int packetId) {
+        public Builder packetId(int packetId) {
             this.packetId = packetId;
             return this;
         }
 
-        public MqttV311PublishPacket.MqttV311PublishPacketBuilder payload(byte[] payload) {
+        public Builder payload(byte[] payload) {
             this.payload = payload;
             return this;
         }

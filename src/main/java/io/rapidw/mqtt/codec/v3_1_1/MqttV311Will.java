@@ -31,8 +31,8 @@ public class MqttV311Will {
         this.retain = retain;
     }
 
-    public static MqttV311WillBuilder builder() {
-        return new MqttV311WillBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getTopic() {
@@ -51,31 +51,31 @@ public class MqttV311Will {
         return this.retain;
     }
 
-    public static class MqttV311WillBuilder {
+    public static class Builder {
         private String topic;
         private MqttV311QosLevel qosLevel;
         private byte[] message;
         private boolean retain;
 
-        MqttV311WillBuilder() {
+        Builder() {
         }
 
-        public MqttV311Will.MqttV311WillBuilder topic(String topic) {
+        public Builder topic(String topic) {
             this.topic = Objects.requireNonNull(topic);
             return this;
         }
 
-        public MqttV311Will.MqttV311WillBuilder qosLevel(MqttV311QosLevel qosLevel) {
+        public Builder qosLevel(MqttV311QosLevel qosLevel) {
             this.qosLevel = qosLevel;
             return this;
         }
 
-        public MqttV311Will.MqttV311WillBuilder message(byte[] message) {
+        public Builder message(byte[] message) {
             this.message = Objects.requireNonNull(message);
             return this;
         }
 
-        public MqttV311Will.MqttV311WillBuilder retain(boolean retain) {
+        public Builder retain(boolean retain) {
             this.retain = retain;
             return this;
         }

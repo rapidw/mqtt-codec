@@ -40,8 +40,8 @@ public class MqttV311UnsubAckPacket extends MqttV311Packet {
         this.packetId = packetId;
     }
 
-    public static MqttV311UnsubAckPacketBuilder builder() {
-        return new MqttV311UnsubAckPacketBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public int getPacketId() {
@@ -52,13 +52,13 @@ public class MqttV311UnsubAckPacket extends MqttV311Packet {
         this.packetId = packetId;
     }
 
-    public static class MqttV311UnsubAckPacketBuilder {
+    public static class Builder {
         private int packetId;
 
-        MqttV311UnsubAckPacketBuilder() {
+        Builder() {
         }
 
-        public MqttV311UnsubAckPacket.MqttV311UnsubAckPacketBuilder packetId(int packetId) {
+        public Builder packetId(int packetId) {
             this.packetId = packetId;
             return this;
         }

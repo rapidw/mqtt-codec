@@ -43,8 +43,8 @@ public class MqttV311UnsubscribePacket extends MqttV311Packet {
         this.packetId = packetId;
     }
 
-    public static MqttV311UnsubscribePacketBuilder builder() {
-        return new MqttV311UnsubscribePacketBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public int getPacketId() {
@@ -63,32 +63,32 @@ public class MqttV311UnsubscribePacket extends MqttV311Packet {
         this.topicFilters = topicFilters;
     }
 
-    public static class MqttV311UnsubscribePacketBuilder {
+    public static class Builder {
         private ArrayList<String> topicFilters;
         private int packetId;
 
-        MqttV311UnsubscribePacketBuilder() {
+        Builder() {
         }
 
-        public MqttV311UnsubscribePacket.MqttV311UnsubscribePacketBuilder topicFilter(String topicFilter) {
+        public Builder topicFilter(String topicFilter) {
             if (this.topicFilters == null) this.topicFilters = new ArrayList<String>();
             this.topicFilters.add(topicFilter);
             return this;
         }
 
-        public MqttV311UnsubscribePacket.MqttV311UnsubscribePacketBuilder topicFilters(Collection<? extends String> topicFilters) {
+        public Builder topicFilters(Collection<? extends String> topicFilters) {
             if (this.topicFilters == null) this.topicFilters = new ArrayList<String>();
             this.topicFilters.addAll(topicFilters);
             return this;
         }
 
-        public MqttV311UnsubscribePacket.MqttV311UnsubscribePacketBuilder clearTopicFilters() {
+        public Builder clearTopicFilters() {
             if (this.topicFilters != null)
                 this.topicFilters.clear();
             return this;
         }
 
-        public MqttV311UnsubscribePacket.MqttV311UnsubscribePacketBuilder packetId(int packetId) {
+        public Builder packetId(int packetId) {
             this.packetId = packetId;
             return this;
         }

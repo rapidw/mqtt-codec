@@ -46,15 +46,15 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
         }
     }
 
-    public static MqttV311SubscribePacketBuilder builder() {
-        return new MqttV311SubscribePacketBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public int getPacketId() {
         return this.packetId;
     }
 
-    public List<MqttV311TopicAndQosLevel> getMqttV311TopicAndQosLevels() {
+    public List<MqttV311TopicAndQosLevel> getTopicAndQosLevels() {
         return this.mqttV311TopicAndQosLevels;
     }
 
@@ -62,23 +62,23 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
         this.packetId = packetId;
     }
 
-    void setMqttV311TopicAndQosLevels(List<MqttV311TopicAndQosLevel> mqttV311TopicAndQosLevels) {
+    void setTopicAndQosLevels(List<MqttV311TopicAndQosLevel> mqttV311TopicAndQosLevels) {
         this.mqttV311TopicAndQosLevels = mqttV311TopicAndQosLevels;
     }
 
-    public static class MqttV311SubscribePacketBuilder {
+    public static class Builder {
         private int packetId;
         private List<MqttV311TopicAndQosLevel> topicAndQosLevels;
 
-        MqttV311SubscribePacketBuilder() {
+        Builder() {
         }
 
-        public MqttV311SubscribePacket.MqttV311SubscribePacketBuilder packetId(int packetId) {
+        public Builder packetId(int packetId) {
             this.packetId = packetId;
             return this;
         }
 
-        public MqttV311SubscribePacket.MqttV311SubscribePacketBuilder topicAndQosLevel(MqttV311TopicAndQosLevel topicAndQosLevels) {
+        public Builder topicAndQosLevel(MqttV311TopicAndQosLevel topicAndQosLevels) {
             if (this.topicAndQosLevels == null) {
                 this.topicAndQosLevels = new ArrayList<>();
             }
@@ -86,7 +86,7 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
             return this;
         }
 
-        public MqttV311SubscribePacket.MqttV311SubscribePacketBuilder topicAndQosLevels(List<MqttV311TopicAndQosLevel> topicAndQosLevels) {
+        public Builder topicAndQosLevels(List<MqttV311TopicAndQosLevel> topicAndQosLevels) {
             if (this.topicAndQosLevels == null) {
                 this.topicAndQosLevels = new ArrayList<>();
             }
@@ -94,7 +94,7 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
             return this;
         }
 
-        public MqttV311SubscribePacket.MqttV311SubscribePacketBuilder clearTopicAndQosLevels() {
+        public Builder clearTopicAndQosLevels() {
             if (this.topicAndQosLevels != null) {
                 this.topicAndQosLevels.clear();
             }

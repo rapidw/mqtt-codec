@@ -40,36 +40,7 @@ public class MqttV311TopicAndQosLevel {
         this.qosLevel = qosLevel;
     }
 
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof MqttV311TopicAndQosLevel)) return false;
-        final MqttV311TopicAndQosLevel other = (MqttV311TopicAndQosLevel) o;
-        if (!other.canEqual((Object) this)) return false;
-        final Object this$topicFilter = this.getTopicFilter();
-        final Object other$topicFilter = other.getTopicFilter();
-        if (this$topicFilter == null ? other$topicFilter != null : !this$topicFilter.equals(other$topicFilter))
-            return false;
-        final Object this$qosLevel = this.getQosLevel();
-        final Object other$qosLevel = other.getQosLevel();
-        if (this$qosLevel == null ? other$qosLevel != null : !this$qosLevel.equals(other$qosLevel)) return false;
-        return true;
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof MqttV311TopicAndQosLevel;
-    }
-
-    public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $topicFilter = this.getTopicFilter();
-        result = result * PRIME + ($topicFilter == null ? 43 : $topicFilter.hashCode());
-        final Object $qosLevel = this.getQosLevel();
-        result = result * PRIME + ($qosLevel == null ? 43 : $qosLevel.hashCode());
-        return result;
-    }
-
     public String toString() {
-        return "MqttV311TopicAndQosLevel(topicFilter=" + this.getTopicFilter() + ", qosLevel=" + this.getQosLevel() + ")";
+        return "TopicAndQosLevel(topicFilter=" + this.getTopicFilter() + ", qosLevel=" + this.getQosLevel() + ")";
     }
 }

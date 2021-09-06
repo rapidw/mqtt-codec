@@ -79,7 +79,7 @@ public class BenchmarkRunner {
             .username("username")
             .password("password".getBytes(StandardCharsets.UTF_8))
             .clientId("client")
-            .keepaliveSeconds(0)
+            .keepAliveSeconds(0)
             .cleanSession(true)
             .build();
     }

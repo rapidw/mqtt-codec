@@ -20,13 +20,13 @@ import io.netty.handler.codec.DecoderException;
 public class MqttV311ConnectPacket extends MqttV311Packet {
 
     private boolean cleanSession;
-    private int keepaliveSeconds;
+    private int keepAliveSeconds;
     private String clientId;
     private String username;
     private byte[] password;
     private MqttV311Will will;
 
-    private MqttV311Will.MqttV311WillBuilder willBuilder;
+    private MqttV311Will.Builder willBuilder;
 
     private boolean usernameFlag;
 
@@ -43,12 +43,12 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
         super(MqttV311PacketType.CONNECT);
     }
 
-    private MqttV311ConnectPacket(boolean cleanSession, String clientId, int keepaliveSeconds, String username,
+    private MqttV311ConnectPacket(boolean cleanSession, String clientId, int keepAliveSeconds, String username,
                                   byte[] password, MqttV311Will will) {
         this();
         this.cleanSession = cleanSession;
         this.clientId = clientId;
-        this.keepaliveSeconds = keepaliveSeconds;
+        this.keepAliveSeconds = keepAliveSeconds;
         this.username = username;
         this.password = password;
         this.will = will;
@@ -62,8 +62,8 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
         return this.cleanSession;
     }
 
-    public int getKeepaliveSeconds() {
-        return this.keepaliveSeconds;
+    public int getKeepAliveSeconds() {
+        return this.keepAliveSeconds;
     }
 
     public String getClientId() {
@@ -86,8 +86,8 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
         this.cleanSession = cleanSession;
     }
 
-    void setKeepaliveSeconds(int keepaliveSeconds) {
-        this.keepaliveSeconds = keepaliveSeconds;
+    void setKeepAliveSeconds(int keepAliveSeconds) {
+        this.keepAliveSeconds = keepAliveSeconds;
     }
 
     void setClientId(String clientId) {
@@ -106,7 +106,7 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
         this.will = will;
     }
 
-    void setWillBuilder(MqttV311Will.MqttV311WillBuilder willBuilder) {
+    void setWillBuilder(MqttV311Will.Builder willBuilder) {
         this.willBuilder = willBuilder;
     }
 
@@ -118,7 +118,7 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
         this.passwordFlag = passwordFlag;
     }
 
-    MqttV311Will.MqttV311WillBuilder getWillBuilder() {
+    MqttV311Will.Builder getWillBuilder() {
         return this.willBuilder;
     }
 
@@ -151,7 +151,7 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
             return this;
         }
 
-        public MqttV311ConnectPacket.MqttV311ConnectPacketBuilder keepaliveSeconds(int keepaliveSeconds) {
+        public MqttV311ConnectPacket.MqttV311ConnectPacketBuilder keepAliveSeconds(int keepaliveSeconds) {
             this.keepaliveSeconds = keepaliveSeconds;
             return this;
         }

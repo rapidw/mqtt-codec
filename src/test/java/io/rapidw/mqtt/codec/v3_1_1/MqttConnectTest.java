@@ -39,7 +39,7 @@ public class MqttConnectTest {
                 .username("username")
                 .password("password".getBytes(StandardCharsets.UTF_8))
                 .cleanSession(true)
-                .keepaliveSeconds(30)
+                .keepAliveSeconds(30)
                 .clientId("client id")
                 .will(
                     MqttV311Will.builder()
@@ -62,7 +62,7 @@ public class MqttConnectTest {
         assertThat(packet1.getUsername()).isEqualTo("username");
         assertThat(packet1.getPassword()).isEqualTo("password".getBytes(StandardCharsets.UTF_8));
         assertThat(packet1.getClientId()).isEqualTo("client id");
-        assertThat(packet1.getKeepaliveSeconds()).isEqualTo(30);
+        assertThat(packet1.getKeepAliveSeconds()).isEqualTo(30);
         assertThat(packet1.isCleanSession()).isTrue();
         assertThat(packet1.getWill()).isNotNull();
         MqttV311Will will = packet1.getWill();
