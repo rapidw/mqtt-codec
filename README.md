@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/rapidw/mqtt-codec.svg?branch=master)](https://travis-ci.org/rapidw/mqtt-codec)
 [![Maven Central](http://img.shields.io/maven-central/v/io.rapidw.mqtt/rapidw-mqtt-codec)](https://search.maven.org/artifact/io.rapidw.mqtt/rapidw-mqtt-codec)
-[![Bintray](http://img.shields.io/bintray/v/rapidw/maven/rapidw-mqtt-codec)](https://bintray.com/rapidw/maven/rapidw-mqtt-codec/_latestVersion)
 [![License](https://img.shields.io/github/license/rapidw/mqtt-codec)](https://github.com/rapidw/mqtt-codec/blob/master/LICENSE)
 
 a MQTT 3.1.1 codec implemented by Java & Netty
