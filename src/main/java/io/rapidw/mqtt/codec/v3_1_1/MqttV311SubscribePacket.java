@@ -23,27 +23,20 @@ import java.util.List;
 public class MqttV311SubscribePacket extends MqttV311Packet {
 
     private int packetId;
-    private List<MqttV311TopicAndQosLevel> mqttV311TopicAndQosLevels;
+    private List<MqttV311TopicAndQosLevel> topicAndQosLevels;
 
     MqttV311SubscribePacket(short flags) {
         super(MqttV311PacketType.SUBSCRIBE);
         if (flags != 2) {
             throw new DecoderException("[MQTT-3.8.1-1] invalid SUBSCRIBE flags");
         }
-    }
-
-    private MqttV311SubscribePacket() {
-        super(MqttV311PacketType.SUBSCRIBE);
+        this.topicAndQosLevels = new ArrayList<>();
     }
 
     private MqttV311SubscribePacket(int packetId, List<MqttV311TopicAndQosLevel> topicAndQosLevels) {
-        this();
+        super(MqttV311PacketType.SUBSCRIBE);
         this.packetId = packetId;
-        if (topicAndQosLevels == null) {
-            this.mqttV311TopicAndQosLevels = new ArrayList<>();
-        } else {
-            this.mqttV311TopicAndQosLevels = topicAndQosLevels;
-        }
+        this.topicAndQosLevels = topicAndQosLevels;
     }
 
     public static Builder builder() {
@@ -55,7 +48,7 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
     }
 
     public List<MqttV311TopicAndQosLevel> getTopicAndQosLevels() {
-        return this.mqttV311TopicAndQosLevels;
+        return this.topicAndQosLevels;
     }
 
     void setPacketId(int packetId) {
@@ -63,7 +56,7 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
     }
 
     void setTopicAndQosLevels(List<MqttV311TopicAndQosLevel> mqttV311TopicAndQosLevels) {
-        this.mqttV311TopicAndQosLevels = mqttV311TopicAndQosLevels;
+        this.topicAndQosLevels = mqttV311TopicAndQosLevels;
     }
 
     public static class Builder {
