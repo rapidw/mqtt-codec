@@ -133,7 +133,7 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
     public static class MqttV311ConnectPacketBuilder {
         private boolean cleanSession;
         private String clientId;
-        private int keepaliveSeconds;
+        private int keepAliveSeconds;
         private String username;
         private byte[] password;
         private MqttV311Will will;
@@ -151,8 +151,8 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
             return this;
         }
 
-        public MqttV311ConnectPacket.MqttV311ConnectPacketBuilder keepAliveSeconds(int keepaliveSeconds) {
-            this.keepaliveSeconds = keepaliveSeconds;
+        public MqttV311ConnectPacket.MqttV311ConnectPacketBuilder keepAliveSeconds(int keepAliveSeconds) {
+            this.keepAliveSeconds = keepAliveSeconds;
             return this;
         }
 
@@ -172,11 +172,11 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
         }
 
         public MqttV311ConnectPacket build() {
-            return new MqttV311ConnectPacket(cleanSession, clientId, keepaliveSeconds, username, password, will);
+            return new MqttV311ConnectPacket(cleanSession, clientId, keepAliveSeconds, username, password, will);
         }
 
         public String toString() {
-            return "MqttV311ConnectPacket.MqttV311ConnectPacketBuilder(cleanSession=" + this.cleanSession + ", clientId=" + this.clientId + ", keepaliveSeconds=" + this.keepaliveSeconds + ", username=" + this.username + ", password=" + java.util.Arrays.toString(this.password) + ", will=" + this.will + ")";
+            return "MqttV311ConnectPacket.MqttV311ConnectPacketBuilder(cleanSession=" + this.cleanSession + ", clientId=" + this.clientId + ", keepaliveSeconds=" + this.keepAliveSeconds + ", username=" + this.username + ", password=" + java.util.Arrays.toString(this.password) + ", will=" + this.will + ")";
         }
     }
 }

@@ -21,7 +21,7 @@ public class MqttV311PublishPacket extends MqttV311Packet {
     private MqttV311QosLevel qosLevel;
     private boolean retain;
     private String topic;
-    private int packetId;
+    private Integer packetId;
     private byte[] payload;
 
     MqttV311PublishPacket() {
@@ -33,7 +33,7 @@ public class MqttV311PublishPacket extends MqttV311Packet {
         MqttV311QosLevel qosLevel,
         boolean retain,
         String topic,
-        int packetId,
+        Integer packetId,
         byte[] payload) {
         super(MqttV311PacketType.PUBLISH);
         this.dupFlag = dupFlag;
@@ -64,7 +64,7 @@ public class MqttV311PublishPacket extends MqttV311Packet {
         return this.topic;
     }
 
-    public int getPacketId() {
+    public Integer getPacketId() {
         return this.packetId;
     }
 
@@ -88,7 +88,7 @@ public class MqttV311PublishPacket extends MqttV311Packet {
         this.topic = topic;
     }
 
-    void setPacketId(int packetId) {
+    void setPacketId(Integer packetId) {
         this.packetId = packetId;
     }
 
@@ -101,7 +101,7 @@ public class MqttV311PublishPacket extends MqttV311Packet {
         private MqttV311QosLevel qosLevel;
         private boolean retain;
         private String topic;
-        private int packetId;
+        private Integer packetId;
         private byte[] payload;
 
         Builder() {
@@ -127,7 +127,7 @@ public class MqttV311PublishPacket extends MqttV311Packet {
             return this;
         }
 
-        public Builder packetId(int packetId) {
+        public Builder packetId(Integer packetId) {
             this.packetId = packetId;
             return this;
         }

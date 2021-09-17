@@ -146,7 +146,7 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
         buf.writeByte(b);
 
         if (packet.getKeepAliveSeconds() < 0 || packet.getKeepAliveSeconds() > 65535) {
-            throw new EncoderException("invalid keepalive seconds");
+            throw new EncoderException("invalid keepAlive seconds");
         }
         buf.writeShort(packet.getKeepAliveSeconds());
 
@@ -240,9 +240,12 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
         buf.writeByte(b);
         writeVariablePartLength(buf, variablePartSize);
         writeStringBytes(buf, topicBytes, "topic name");
-        if (packet.getQosLevel() == MqttV311QosLevel.AT_LEAST_ONCE
-            || packet.getQosLevel() == MqttV311QosLevel.EXACTLY_ONCE) {
-            buf.writeShort(MqttV311ValidationUtils.validatePacketId(packet.getPacketId()));
+        if (packet.getPacketId() != null) {
+            if (packet.getQosLevel() == MqttV311QosLevel.AT_LEAST_ONCE || packet.getQosLevel() == MqttV311QosLevel.EXACTLY_ONCE) {
+                buf.writeShort(MqttV311ValidationUtils.validatePacketId(packet.getPacketId()));
+            } else {
+                throw new EncoderException("PacketId is only present in PUBLISH Packets where the QoS level is 1 or 2");
+            }
         }
         log.debug("payload: {}", packet.getPayload());
         buf.writeBytes(packet.getPayload());
