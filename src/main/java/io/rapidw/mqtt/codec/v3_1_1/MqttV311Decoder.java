@@ -141,7 +141,7 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
 
     private void readConnectVariableHeader(ByteBuf buf, MqttV311ConnectPacket packet) {
         DecoderUtils.DecodedResult<String> protocolName = readString(buf);
-        if (!protocolName.getValue().equals("MQTT")) {
+        if (!"MQTT".equals(protocolName.getValue())) {
             throw new DecoderException("[MQTT-3.1.2-1] invalid protocol name");
         }
 

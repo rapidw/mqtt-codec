@@ -109,8 +109,10 @@ public class MqttV311UnsubscribePacket extends MqttV311Packet {
             return new MqttV311UnsubscribePacket(topicFilters, packetId);
         }
 
+        @Override
         public String toString() {
-            return "MqttV311UnsubscribePacket.MqttV311UnsubscribePacketBuilder(topicFilters=" + this.topicFilters + ", packetId=" + this.packetId + ")";
+            return "MqttV311UnsubscribePacket.MqttV311UnsubscribePacketBuilder(topicFilters=" + this.topicFilters +
+                ", packetId=" + this.packetId + ")";
         }
     }
 }

@@ -26,7 +26,7 @@ import io.netty.util.concurrent.EventExecutor;
 import java.net.SocketAddress;
 import java.util.Objects;
 
-public abstract class EmbeddedChannelHandlerContext implements ChannelHandlerContext {
+public abstract class AbstractEmbeddedChannelHandlerContext implements ChannelHandlerContext {
     private static final String HANDLER_NAME = "microbench-delegator-ctx";
     private final EventLoop eventLoop;
     private final Channel channel;
@@ -34,7 +34,7 @@ public abstract class EmbeddedChannelHandlerContext implements ChannelHandlerCon
     private final ChannelHandler handler;
     private SocketAddress localAddress;
 
-    protected EmbeddedChannelHandlerContext(
+    protected AbstractEmbeddedChannelHandlerContext(
         ByteBufAllocator alloc, ChannelHandler handler, EmbeddedChannel channel) {
         this.alloc = Objects.requireNonNull(alloc, "alloc");
         this.channel = Objects.requireNonNull(channel, "channel");

@@ -33,7 +33,7 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
 
     public static final MqttV311Encoder INSTANCE = new MqttV311Encoder();
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MqttV311Encoder.class);
-    private static byte[] PROTOCOL_NAME_BYTES =
+    private static final byte[] PROTOCOL_NAME_BYTES =
         MqttV311ValidationUtils.validateAndEncodeString("MQTT", "protocol name");
 
     private MqttV311Encoder() {

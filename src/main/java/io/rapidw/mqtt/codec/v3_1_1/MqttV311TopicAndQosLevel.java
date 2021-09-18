@@ -40,6 +40,7 @@ public class MqttV311TopicAndQosLevel {
         this.qosLevel = qosLevel;
     }
 
+    @Override
     public String toString() {
         return "TopicAndQosLevel(topicFilter=" + this.getTopicFilter() + ", qosLevel=" + this.getQosLevel() + ")";
     }

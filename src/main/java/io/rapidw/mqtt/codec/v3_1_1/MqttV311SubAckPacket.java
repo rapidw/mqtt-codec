@@ -76,20 +76,25 @@ public class MqttV311SubAckPacket extends MqttV311Packet {
         }
 
         public Builder qosLevel(MqttV311QosLevel qosLevel) {
-            if (this.qosLevels == null) this.qosLevels = new ArrayList<MqttV311QosLevel>();
+            if (this.qosLevels == null) {
+                this.qosLevels = new ArrayList<MqttV311QosLevel>();
+            }
             this.qosLevels.add(qosLevel);
             return this;
         }
 
         public Builder qosLevels(Collection<? extends MqttV311QosLevel> qosLevels) {
-            if (this.qosLevels == null) this.qosLevels = new ArrayList<MqttV311QosLevel>();
+            if (this.qosLevels == null) {
+                this.qosLevels = new ArrayList<MqttV311QosLevel>();
+            }
             this.qosLevels.addAll(qosLevels);
             return this;
         }
 
         public Builder clearQosLevels() {
-            if (this.qosLevels != null)
+            if (this.qosLevels != null) {
                 this.qosLevels.clear();
+            }
             return this;
         }
 
@@ -109,8 +114,10 @@ public class MqttV311SubAckPacket extends MqttV311Packet {
             return new MqttV311SubAckPacket(packetId, qosLevels);
         }
 
+        @Override
         public String toString() {
-            return "MqttV311SubAckPacket.MqttV311SubAckPacketBuilder(packetId=" + this.packetId + ", qosLevels=" + this.qosLevels + ")";
+            return "MqttV311SubAckPacket.MqttV311SubAckPacketBuilder(packetId=" + this.packetId + ", qosLevels=" +
+                this.qosLevels + ")";
         }
     }
 }

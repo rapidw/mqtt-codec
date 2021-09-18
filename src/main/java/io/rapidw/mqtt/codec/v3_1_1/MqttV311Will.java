@@ -19,10 +19,10 @@ import java.util.Objects;
 
 public class MqttV311Will {
 
-    private String topic;
-    private MqttV311QosLevel qosLevel;
-    private byte[] message;
-    private boolean retain;
+    private final String topic;
+    private final MqttV311QosLevel qosLevel;
+    private final byte[] message;
+    private final boolean retain;
 
     MqttV311Will(String topic, MqttV311QosLevel qosLevel, byte[] message, boolean retain) {
         this.topic = Objects.requireNonNull(topic);
@@ -84,8 +84,10 @@ public class MqttV311Will {
             return new MqttV311Will(topic, qosLevel, message, retain);
         }
 
+        @Override
         public String toString() {
-            return "MqttV311Will.MqttV311WillBuilder(topic=" + this.topic + ", qosLevel=" + this.qosLevel + ", message=" + java.util.Arrays.toString(this.message) + ", retain=" + this.retain + ")";
+            return "MqttV311Will.MqttV311WillBuilder(topic=" + this.topic + ", qosLevel=" + this.qosLevel + ", message="
+                + java.util.Arrays.toString(this.message) + ", retain=" + this.retain + ")";
         }
     }
 }

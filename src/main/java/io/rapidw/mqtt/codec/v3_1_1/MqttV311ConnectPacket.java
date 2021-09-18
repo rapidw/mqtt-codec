@@ -175,6 +175,7 @@ public class MqttV311ConnectPacket extends MqttV311Packet {
             return new MqttV311ConnectPacket(cleanSession, clientId, keepAliveSeconds, username, password, will);
         }
 
+        @Override
         public String toString() {
             return "MqttV311ConnectPacket.MqttV311ConnectPacketBuilder(cleanSession=" + this.cleanSession + ", clientId=" + this.clientId + ", keepaliveSeconds=" + this.keepAliveSeconds + ", username=" + this.username + ", password=" + java.util.Arrays.toString(this.password) + ", will=" + this.will + ")";
         }

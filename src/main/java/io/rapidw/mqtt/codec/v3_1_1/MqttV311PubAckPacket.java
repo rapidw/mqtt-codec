@@ -67,6 +67,7 @@ public class MqttV311PubAckPacket extends MqttV311Packet {
             return new MqttV311PubAckPacket(packetId);
         }
 
+        @Override
         public String toString() {
             return "MqttV311PubAckPacket.MqttV311PubAckPacketBuilder(packetId=" + this.packetId + ")";
         }

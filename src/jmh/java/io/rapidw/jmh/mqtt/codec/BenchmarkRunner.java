@@ -38,16 +38,16 @@ public class BenchmarkRunner {
         Main.main(args);
     }
 
-    private static EmbeddedChannelWriteReleaseHandlerContext nettyEncoderContext =
-        new EmbeddedChannelWriteReleaseHandlerContext(
+    private static AbstractEmbeddedChannelWriteReleaseHandlerContext nettyEncoderContext =
+        new AbstractEmbeddedChannelWriteReleaseHandlerContext(
             PooledByteBufAllocator.DEFAULT, MqttEncoder.INSTANCE) {
             @Override
             protected void handleException(Throwable t) {
                 log.error("error", t);
             }
         };
-    private static EmbeddedChannelWriteReleaseHandlerContext waferEncoderContext =
-        new EmbeddedChannelWriteReleaseHandlerContext(
+    private static AbstractEmbeddedChannelWriteReleaseHandlerContext waferEncoderContext =
+        new AbstractEmbeddedChannelWriteReleaseHandlerContext(
             PooledByteBufAllocator.DEFAULT, MqttV311Encoder.INSTANCE) {
             @Override
             protected void handleException(Throwable t) {

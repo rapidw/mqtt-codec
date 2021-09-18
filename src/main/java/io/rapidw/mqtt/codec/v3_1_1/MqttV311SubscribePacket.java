@@ -98,8 +98,10 @@ public class MqttV311SubscribePacket extends MqttV311Packet {
             return new MqttV311SubscribePacket(packetId, topicAndQosLevels);
         }
 
+        @Override
         public String toString() {
-            return "MqttV311SubscribePacket.MqttV311SubscribePacketBuilder(packetId=" + this.packetId + ", topicAndQosLevels=" + this.topicAndQosLevels + ")";
+            return "MqttV311SubscribePacket.MqttV311SubscribePacketBuilder(packetId=" + this.packetId +
+                ", topicAndQosLevels=" + this.topicAndQosLevels + ")";
         }
     }
 }

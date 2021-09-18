@@ -141,8 +141,11 @@ public class MqttV311PublishPacket extends MqttV311Packet {
             return new MqttV311PublishPacket(dupFlag, qosLevel, retain, topic, packetId, payload);
         }
 
+        @Override
         public String toString() {
-            return "MqttV311PublishPacket.MqttV311PublishPacketBuilder(dupFlag=" + this.dupFlag + ", qosLevel=" + this.qosLevel + ", retain=" + this.retain + ", topic=" + this.topic + ", packetId=" + this.packetId + ", payload=" + java.util.Arrays.toString(this.payload) + ")";
+            return "MqttV311PublishPacket.MqttV311PublishPacketBuilder(dupFlag=" + this.dupFlag + ", qosLevel=" +
+                this.qosLevel + ", retain=" + this.retain + ", topic=" + this.topic + ", packetId=" + this.packetId +
+                ", payload=" + java.util.Arrays.toString(this.payload) + ")";
         }
     }
 }

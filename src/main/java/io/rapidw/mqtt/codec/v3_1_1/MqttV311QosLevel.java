@@ -28,11 +28,11 @@ public enum MqttV311QosLevel {
 
     private final int value;
 
-    private static Map<Integer, MqttV311QosLevel> valueMap = new HashMap<>();
+    private static final Map<Integer, MqttV311QosLevel> VALUE_MAP = new HashMap<>();
 
     static {
         for (MqttV311QosLevel qosLevel : values()) {
-            valueMap.put(qosLevel.value, qosLevel);
+            VALUE_MAP.put(qosLevel.value, qosLevel);
         }
     }
 
@@ -41,7 +41,7 @@ public enum MqttV311QosLevel {
     }
 
     public static MqttV311QosLevel of(int value) {
-        MqttV311QosLevel qosLevel = valueMap.get(value);
+        MqttV311QosLevel qosLevel = VALUE_MAP.get(value);
         if (qosLevel == null) {
             throw new DecoderException("invalid QoS: " + value);
         } else {

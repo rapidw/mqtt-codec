@@ -22,14 +22,14 @@ import io.netty.channel.ChannelPromise;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.util.ReferenceCounted;
 
-public abstract class EmbeddedChannelWriteReleaseHandlerContext
-    extends EmbeddedChannelHandlerContext {
-    protected EmbeddedChannelWriteReleaseHandlerContext(
+public abstract class AbstractEmbeddedChannelWriteReleaseHandlerContext
+    extends AbstractEmbeddedChannelHandlerContext {
+    protected AbstractEmbeddedChannelWriteReleaseHandlerContext(
         ByteBufAllocator alloc, ChannelHandler handler) {
         this(alloc, handler, new EmbeddedChannel());
     }
 
-    protected EmbeddedChannelWriteReleaseHandlerContext(
+    protected AbstractEmbeddedChannelWriteReleaseHandlerContext(
         ByteBufAllocator alloc, ChannelHandler handler, EmbeddedChannel channel) {
         super(alloc, handler, channel);
     }
