@@ -13,7 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.rapidw.mqtt.codec.v5;
+package io.rapidw.mqtt.codec.v5.packet;
 
-public class MqttV5ConnectPacket extends MqttV5Packet{
+
+import io.rapidw.mqtt.codec.v5.MqttV5PacketType;
+
+class MqttV5Packet {
+
+    protected MqttV5Packet(MqttV5PacketType type) {
+        this.type = type;
+    }
+
+    protected MqttV5PacketType type;
+
+    public MqttV5PacketType getType() {
+        return type;
+    }
 }
