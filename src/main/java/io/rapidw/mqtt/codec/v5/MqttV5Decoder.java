@@ -20,10 +20,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.ReplayingDecoder;
 import io.rapidw.mqtt.codec.utils.DecoderUtils;
-import io.rapidw.mqtt.codec.v3_1_1.*;
-import io.rapidw.mqtt.codec.v5.packet.MqttV5ConnAckPacket;
-import io.rapidw.mqtt.codec.v5.packet.MqttV5ConnectPacket;
-import io.rapidw.mqtt.codec.v5.packet.MqttV5Packet;
+import io.rapidw.mqtt.codec.v3_1_1.MqttV311QosLevel;
 
 import java.util.List;
 
@@ -99,7 +96,7 @@ public class MqttV5Decoder extends ReplayingDecoder<MqttV5Decoder.DecoderState> 
             packet.setPasswordFlag(passwordFlag);
 
             if (isSet(b, 2)) {
-                MqttV311Will.Builder willBuilder = MqttV311Will.builder();
+                MqttV5Will.Builder willBuilder = MqttV5Will.builder();
                 willBuilder.qosLevel(MqttV311QosLevel.of((b & 0x18) >> 3));
                 willBuilder.retain(isSet(b, 5));
                 packet.setWillBuilder(willBuilder);

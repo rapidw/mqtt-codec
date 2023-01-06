@@ -1,11 +1,10 @@
-package io.rapidw.mqtt.codec.v5.packet;
+package io.rapidw.mqtt.codec.v5;
 
 import io.netty.handler.codec.DecoderException;
-import io.rapidw.mqtt.codec.v5.MqttV5PacketType;
 
 public class MqttV5ConnAckPacket extends MqttV5Packet {
     private boolean sessionPresent;
-    private MqttV5ConnectReturnCode connectReturnCode;
+    private     MqttV5ReasonCode reasonCode;
 
     MqttV5ConnAckPacket(short flags, int remainingLength) {
         super(MqttV5PacketType.CONNACK);
@@ -20,10 +19,10 @@ public class MqttV5ConnAckPacket extends MqttV5Packet {
         super(MqttV5PacketType.CONNACK);
     }
 
-    private MqttV5ConnAckPacket(boolean sessionPresent, MqttV5ConnectReturnCode connectReturnCode) {
+    private MqttV5ConnAckPacket(boolean sessionPresent, MqttV5ReasonCode reasonCode) {
         this();
         this.sessionPresent = sessionPresent;
-        this.connectReturnCode = connectReturnCode;
+        this.reasonCode = reasonCode;
     }
 
     public static MqttV5ConnAckPacket.MqttV5ConnAckPacketBuilder builder() {
@@ -34,21 +33,21 @@ public class MqttV5ConnAckPacket extends MqttV5Packet {
         return this.sessionPresent;
     }
 
-    public MqttV5ConnectReturnCode getConnectReturnCode() {
-        return this.connectReturnCode;
+    public MqttV5ReasonCode getReasonCode() {
+        return this.reasonCode;
     }
 
     void setSessionPresent(boolean sessionPresent) {
         this.sessionPresent = sessionPresent;
     }
 
-    void setConnectReturnCode(MqttV5ConnectReturnCode connectReturnCode) {
-        this.connectReturnCode = connectReturnCode;
+    void setReasonCode(MqttV5ReasonCode reasonCode) {
+        this.reasonCode = reasonCode;
     }
 
     public static class MqttV5ConnAckPacketBuilder {
         private boolean sessionPresent;
-        private MqttV5ConnectReturnCode connectReturnCode;
+        private MqttV5ReasonCode reasonCode;
 
         MqttV5ConnAckPacketBuilder() {
         }
@@ -58,17 +57,17 @@ public class MqttV5ConnAckPacket extends MqttV5Packet {
             return this;
         }
 
-        public MqttV5ConnAckPacket.MqttV5ConnAckPacketBuilder connectReturnCode(MqttV5ConnectReturnCode connectReturnCode) {
-            this.connectReturnCode = connectReturnCode;
+        public MqttV5ConnAckPacket.MqttV5ConnAckPacketBuilder connectReturnCode(MqttV5ReasonCode connectReturnCode) {
+            this.reasonCode = connectReturnCode;
             return this;
         }
 
         public MqttV5ConnAckPacket build() {
-            return new MqttV5ConnAckPacket(sessionPresent, connectReturnCode);
+            return new MqttV5ConnAckPacket(sessionPresent, reasonCode);
         }
 
         public String toString() {
-            return "MqttV5ConnAckPacket.MqttV5ConnAckPacketBuilder(sessionPresent=" + this.sessionPresent + ", connectReturnCode=" + this.connectReturnCode + ")";
+            return "MqttV5ConnAckPacket.MqttV5ConnAckPacketBuilder(sessionPresent=" + this.sessionPresent + ", connectReturnCode=" + this.reasonCode + ")";
         }
     }
 }

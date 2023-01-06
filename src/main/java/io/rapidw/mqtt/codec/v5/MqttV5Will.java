@@ -1,6 +1,7 @@
 package io.rapidw.mqtt.codec.v5;
 
 import io.rapidw.mqtt.codec.v3_1_1.MqttV311QosLevel;
+import io.rapidw.mqtt.codec.v5.properties.*;
 
 import java.util.Objects;
 
@@ -9,6 +10,14 @@ public class MqttV5Will {
     private final MqttV311QosLevel qosLevel;
     private final byte[] message;
     private final boolean retain;
+
+    private WillDelayInterval willDelayInterval;
+    private PayloadForamtIndicator payloadForamtIndicator;
+    private MessageExpiryInterval messageExpiryInterval;
+    private ContentType contentType;
+    private ResponseTopic responseTopic;
+    private CorrelationData correlationData;
+    private UserProperty userProperty;
 
     MqttV5Will(String topic, MqttV311QosLevel qosLevel, byte[] message, boolean retain) {
         this.topic = Objects.requireNonNull(topic);
