@@ -11,6 +11,7 @@ R.I.P Dr.Li WenLiang
 - Fast
 - Easy of use
 - Fully compliant to MQTT 3.1.1
+- MQTT 5 support is on the way
 
 # Packet Supported
 - [x] CONNECT
