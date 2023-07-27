@@ -126,6 +126,9 @@ nexusPublishing.repositories {
 release {
     failOnUnversionedFiles.set(false)
     pushReleaseVersionBranch.set("master")
+    git {
+        requireBranch.set("master")
+    }
 }
 
 tasks.named("closeAndReleaseSonatypeStagingRepository") {
