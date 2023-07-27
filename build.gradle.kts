@@ -14,7 +14,6 @@ plugins {
     id("io.freefair.lombok") version "6.6.1"
 }
 group = "io.rapidw.mqtt"
-version = "0.1"
 
 val projectUrl by extra("https://github.com/rapidw/mqtt-codec")
 val vcsUrl by extra("${projectUrl}.git")
