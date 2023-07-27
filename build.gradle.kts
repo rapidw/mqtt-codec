@@ -75,9 +75,9 @@ publishing {
             from(components["java"])
 
             pom {
-                name.set(artifactId)
+                name.set(project.name)
                 description.set("rapidw mqtt codec")
-                url.set(url)
+                url.set(projectUrl)
 
                 licenses {
                     license {
@@ -96,7 +96,7 @@ publishing {
                 scm {
                     connection.set("scm:git:${vcsUrl}")
                     developerConnection.set("scm:git:${vcsUrl}")
-                    url.set(url)
+                    url.set(projectUrl)
                 }
             }
         }
