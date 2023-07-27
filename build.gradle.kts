@@ -6,12 +6,12 @@ plugins {
     `maven-publish`
     signing
     jacoco
-    id("me.champeau.jmh") version "0.6.5"
+    id("me.champeau.jmh") version "0.7.1"
     id("net.researchgate.release") version "3.0.2"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0-rc-1"
 //    id "com.github.spotbugs" version "4.7.3"
 //    id "com.github.hierynomus.license" version "0.16.1"
-    id("io.freefair.lombok") version "6.6.1"
+    id("io.freefair.lombok") version "8.1.0"
 }
 group = "io.rapidw.mqtt"
 

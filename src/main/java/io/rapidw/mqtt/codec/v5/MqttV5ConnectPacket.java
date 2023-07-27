@@ -18,10 +18,11 @@ package io.rapidw.mqtt.codec.v5;
 import io.netty.handler.codec.DecoderException;
 import io.rapidw.mqtt.codec.v5.properties.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
-@Builder
 @Setter
+@Getter
 public class MqttV5ConnectPacket extends MqttV5Packet {
 
     private boolean cleanStart;
@@ -47,6 +48,7 @@ public class MqttV5ConnectPacket extends MqttV5Packet {
     private AuthenticationMethod authenticationMethod;
     private AuthenticationData authenticationData;
 
+    @Builder
     MqttV5ConnectPacket(short flags) {
         super(MqttV5PacketType.CONNECT);
         if ((flags & 0x0F) != 0) {
