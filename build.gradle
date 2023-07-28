@@ -1,0 +1,141 @@
+plugins {
+    id 'java-library'
+    id 'jvm-test-suite'
+    id 'maven-publish'
+    id 'signing'
+    id 'jacoco'
+    id "me.champeau.jmh" version "0.7.1"
+    id "net.researchgate.release" version "3.0.2"
+    id "io.github.gradle-nexus.publish-plugin" version "2.0.0-rc-1"
+//    id "com.github.spotbugs" version "4.7.3"
+    id "com.github.hierynomus.license" version "0.16.1"
+    id "io.freefair.lombok" version "8.1.0"
+}
+group = "io.rapidw.mqtt"
+
+ext {
+    projectUrl = "https://github.com/rapidw/mqtt-codec"
+    vcsUrl = "${projectUrl}.git"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.slf4j:slf4j-api:1.7.30"
+    api "io.netty:netty-codec:4.1.45.Final"
+
+    testImplementation "ch.qos.logback:logback-classic:1.2.3"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.0"
+    testImplementation "org.assertj:assertj-core:3.11.1"
+
+    jmh "io.netty:netty-codec-mqtt:4.1.45.Final"
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+license {
+    header project.file("gradle/license-header")
+}
+
+tasks.withType(Javadoc).configureEach {
+    options {
+        encoding = "UTF-8"
+        locale("en_US")
+        jFlags("-Duser.language=en_US")
+    }
+
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption("html5", true)
+    }
+}
+
+testing {
+    suites {
+        test {
+            useSpock()
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = project.name
+                description = "rapidw mqtt codec"
+                url = projectUrl
+
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+
+                developers {
+                    developer {
+                        name = 'pvtyuan'
+                        email = 'yyz139@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection = "scm:git:${vcsUrl}"
+                    developerConnection = "scm:git:${vcsUrl}"
+                    url = projectUrl
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+nexusPublishing.repositories {
+    sonatype {
+        username = properties["mavenCentralUsername"]
+        password = properties["mavenCentralPassword"]
+    }
+}
+
+release {
+    failOnUnversionedFiles.set(false)
+    pushReleaseVersionBranch.set("master")
+    git {
+        requireBranch.set("master")
+    }
+}
+
+tasks.named("closeAndReleaseSonatypeStagingRepository") {
+    dependsOn("publishToSonatype")
+}
+tasks.afterReleaseBuild {
+    dependsOn("closeAndReleaseSonatypeStagingRepository")
+}
+
+
+//spotbugsMain {
+//    reports {
+//        html {
+//            enabled = true
+//            destination = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+//            stylesheet = 'fancy-hist.xsl'
+//        }
+//    }
+//}
