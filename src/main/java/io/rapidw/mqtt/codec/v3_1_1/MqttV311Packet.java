@@ -15,7 +15,7 @@
  */
 package io.rapidw.mqtt.codec.v3_1_1;
 
-class MqttV311Packet {
+public class MqttV311Packet {
     protected MqttV311Packet(MqttV311PacketType type) {
         this.type = type;
     }
