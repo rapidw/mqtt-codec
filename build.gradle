@@ -12,6 +12,7 @@ plugins {
     id "io.freefair.lombok" version "8.1.0"
 }
 group = "io.rapidw.mqtt"
+description = "Rapidw MQTT codec"
 
 ext {
     projectUrl = "https://github.com/rapidw/mqtt-codec"
@@ -38,7 +39,7 @@ java {
     withJavadocJar()
     withSourcesJar()
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
 tasks.withType(JavaCompile).configureEach {
@@ -47,6 +48,7 @@ tasks.withType(JavaCompile).configureEach {
 
 license {
     header project.file("gradle/license-header")
+    ext.year = Calendar.getInstance().get(Calendar.YEAR)
 }
 
 tasks.withType(Javadoc).configureEach {
