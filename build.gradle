@@ -110,10 +110,7 @@ signing {
 }
 
 nexusPublishing.repositories {
-    sonatype {
-        username = properties["mavenCentralUsername"]
-        password = properties["mavenCentralPassword"]
-    }
+    sonatype()
 }
 
 release {
