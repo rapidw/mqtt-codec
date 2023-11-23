@@ -18,9 +18,9 @@ R.I.P Dr.Li WenLiang
 - [x] CONACK
 - [x] PUBLISH
 - [x] PUBACK
-- [ ] PUBREC
-- [ ] PUBREL
-- [ ] PUBCOMP
+- [x] PUBREC
+- [x] PUBREL
+- [x] PUBCOMP
 - [x] SUBSCRIBE
 - [x] SUBACK
 - [x] UNSUBSCRIBE

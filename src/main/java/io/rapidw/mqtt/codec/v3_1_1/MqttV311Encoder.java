@@ -55,6 +55,12 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
                 return encodePublish(byteBufAllocator, (MqttV311PublishPacket) packet);
             case PUBACK:
                 return encodePubAck(byteBufAllocator, (MqttV311PubAckPacket) packet);
+            case PUBREC:
+                return encodePubRec(byteBufAllocator, (MqttV311PubRecPacket) packet);
+            case PUBREL:
+                return encodePubRel(byteBufAllocator, (MqttV311PubRelPacket) packet);
+            case PUBCOMP:
+                return encodePubComp(byteBufAllocator, (MqttV311PubCompPacket) packet);
             case SUBSCRIBE:
                 return encodeSubscribe(byteBufAllocator, (MqttV311SubscribePacket) packet);
             case SUBACK:
@@ -261,6 +267,32 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
         return buf;
     }
 
+    private static ByteBuf encodePubRec(ByteBufAllocator byteBufAllocator, MqttV311PubRecPacket packet) {
+        Objects.requireNonNull(packet);
+        ByteBuf buf = byteBufAllocator.buffer(4);
+        buf.writeByte(0x50);
+        buf.writeByte(0x02);
+        buf.writeShort(packet.getPacketId());
+        return buf;
+    }
+
+    private static ByteBuf encodePubRel(ByteBufAllocator byteBufAllocator, MqttV311PubRelPacket packet) {
+        Objects.requireNonNull(packet);
+        ByteBuf buf = byteBufAllocator.buffer(4);
+        buf.writeByte(0x60);
+        buf.writeByte(0x02);
+        buf.writeShort(packet.getPacketId());
+        return buf;
+    }
+
+    private static ByteBuf encodePubComp(ByteBufAllocator byteBufAllocator, MqttV311PubCompPacket packet) {
+        Objects.requireNonNull(packet);
+        ByteBuf buf = byteBufAllocator.buffer(4);
+        buf.writeByte(0x70);
+        buf.writeByte(0x02);
+        buf.writeShort(packet.getPacketId());
+        return buf;
+    }
 
     private static ByteBuf encodeDisconnect(ByteBufAllocator byteBufAllocator, MqttV311DisconnectPacket packet) {
         Objects.requireNonNull(packet);

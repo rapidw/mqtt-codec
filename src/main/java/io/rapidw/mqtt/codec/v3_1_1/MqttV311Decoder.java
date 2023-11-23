@@ -68,6 +68,15 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
                     case PUBACK:
                         this.packet = new MqttV311PubAckPacket(flags, remainingLength);
                         break;
+                    case PUBREC:
+                        this.packet = new MqttV311PubRecPacket(flags, remainingLength);
+                        break;
+                    case PUBREL:
+                        this.packet = new MqttV311PubRelPacket(flags, remainingLength);
+                        break;
+                    case PUBCOMP:
+                        this.packet = new MqttV311PubCompPacket(flags, remainingLength);
+                        break;
                     case SUBSCRIBE:
                         this.packet = new MqttV311SubscribePacket(flags);
                         break;
