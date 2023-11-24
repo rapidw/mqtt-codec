@@ -117,6 +117,15 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
                     case PUBACK:
                         bytesConsumed = readPubAckVariableHeader(in, (MqttV311PubAckPacket) this.packet);
                         break;
+                    case PUBREC:
+                        bytesConsumed = readPubRecVariableHeader(in, (MqttV311PubRecPacket) this.packet);
+                        break;
+                    case PUBREL:
+                        bytesConsumed = readPubRelVariableHeader(in, (MqttV311PubRelPacket) this.packet);
+                        break;
+                    case PUBCOMP:
+                        bytesConsumed = readPubCompVariableHeader(in, (MqttV311PubCompPacket) this.packet);
+                        break;
                     case SUBSCRIBE:
                         bytesConsumed = readSubscribeVariableHeader(in, (MqttV311SubscribePacket) this.packet);
                         break;
@@ -347,6 +356,24 @@ public class MqttV311Decoder extends ReplayingDecoder<MqttV311Decoder.DecoderSta
     }
 
     private int readPubAckVariableHeader(ByteBuf buf, MqttV311PubAckPacket packet) {
+        DecodedResult<Integer> packetId = readMsbLsb(buf);
+        packet.setPacketId(packetId.getValue());
+        return packetId.getBytesConsumed();
+    }
+
+    private int readPubRecVariableHeader(ByteBuf buf, MqttV311PubRecPacket packet) {
+        DecodedResult<Integer> packetId = readMsbLsb(buf);
+        packet.setPacketId(packetId.getValue());
+        return packetId.getBytesConsumed();
+    }
+
+    private int readPubRelVariableHeader(ByteBuf buf, MqttV311PubRelPacket packet) {
+        DecodedResult<Integer> packetId = readMsbLsb(buf);
+        packet.setPacketId(packetId.getValue());
+        return packetId.getBytesConsumed();
+    }
+
+    private int readPubCompVariableHeader(ByteBuf buf, MqttV311PubCompPacket packet) {
         DecodedResult<Integer> packetId = readMsbLsb(buf);
         packet.setPacketId(packetId.getValue());
         return packetId.getBytesConsumed();

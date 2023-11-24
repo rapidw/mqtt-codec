@@ -279,7 +279,7 @@ public class MqttV311Encoder extends MessageToMessageEncoder<MqttV311Packet> {
     private static ByteBuf encodePubRel(ByteBufAllocator byteBufAllocator, MqttV311PubRelPacket packet) {
         Objects.requireNonNull(packet);
         ByteBuf buf = byteBufAllocator.buffer(4);
-        buf.writeByte(0x60);
+        buf.writeByte(0x62);
         buf.writeByte(0x02);
         buf.writeShort(packet.getPacketId());
         return buf;
