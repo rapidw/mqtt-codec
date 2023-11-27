@@ -7,7 +7,7 @@ public class MqttV311PubRelPacket extends MqttV311Packet {
 
     MqttV311PubRelPacket(short flags, int remainingLength) {
         super(MqttV311PacketType.PUBREL);
-        if (flags != 0) {
+        if (flags != 0x02) {
             throw new DecoderException("invalid PUBACK fixed header flags");
         }
         if (remainingLength != 2) {

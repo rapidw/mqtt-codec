@@ -16,7 +16,7 @@ public class MqttV311PubRecPacket extends MqttV311Packet {
     }
 
     private MqttV311PubRecPacket() {
-        super(MqttV311PacketType.PUBACK);
+        super(MqttV311PacketType.PUBREC);
     }
 
     private MqttV311PubRecPacket(int packetId) {
